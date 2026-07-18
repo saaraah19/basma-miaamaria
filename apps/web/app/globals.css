@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand palette — client's chosen colors, unchanged from the original site */
+  --color-primary: #6e9278;
+  --color-secondary: #a5874b;
+  --color-accent: #1a1a1a;
+
+  /* Marketing site surface */
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-text: #333333;
+  --color-muted: #888888;
+  --color-border: #e5e5e5;
+
+  --radius: 10px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --color-bg: #121212;
+  --color-surface: #1e1e1e;
+  --color-text: #e0e0e0;
+  --color-muted: #bbbbbb;
+  --color-border: #333333;
+}
+
+/* Admin dashboard surface — same brand accents, cooler/quieter neutrals
+   than the marketing site so data-dense screens don't fight the warm
+   cream/clay palette that works well for a portfolio hero. */
+[data-surface="admin"] {
+  --color-bg: #f5f5f3;
+  --color-surface: #ffffff;
+  --color-text: #111110;
+  --color-muted: #888884;
+  --color-border: #ebebea;
+  --color-border-2: #e0e0de;
+  --color-hover: #f5f5f3;
+}
+
+[data-surface="admin"][data-theme="dark"] {
+  --color-bg: #111110;
+  --color-surface: #1c1c1a;
+  --color-text: #e8e8e6;
+  --color-muted: #888884;
+  --color-border: #2a2a28;
+  --color-border-2: #333330;
+  --color-hover: #222220;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body, "Inter", sans-serif);
+  transition: background 0.3s, color 0.3s;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+/* Respect reduced-motion preferences globally — every keyframe animation
+   in the component CSS should be wrapped the same way at its call site,
+   this is the page-wide backstop. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus everywhere — the original app had no explicit
+   focus-visible styling, relying on (inconsistent) browser defaults. */
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}

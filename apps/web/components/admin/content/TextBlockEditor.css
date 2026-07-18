@@ -1,0 +1,120 @@
+.text-block-editor {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  background: var(--color-surface);
+  margin-bottom: 0.85rem;
+}
+
+.text-block-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+.text-block-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.save-indicator {
+  font-size: 0.775rem;
+  color: var(--color-primary);
+}
+
+.text-block-error {
+  font-size: 0.78rem;
+  color: #dc2626;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--color-bg);
+  border-radius: 6px 6px 0 0;
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+}
+
+.tiptap-toolbar button {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.775rem;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  color: var(--color-text);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.tiptap-toolbar button:hover {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+.tiptap-toolbar button.is-active {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.tiptap-toolbar .toolbar-divider {
+  width: 1px;
+  background: var(--color-border);
+  margin: 0 0.15rem;
+  align-self: stretch;
+  min-height: 16px;
+}
+
+.tiptap-toolbar select {
+  padding: 0.25rem 0.45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  font-size: 0.775rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.tiptap-editor-wrapper {
+  border: 1px solid var(--color-border);
+  border-radius: 0 0 6px 6px;
+  background: var(--color-surface);
+  margin-bottom: 0.65rem;
+  transition: border-color 0.15s;
+}
+
+.tiptap-editor-wrapper:focus-within {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(165, 135, 75, 0.08);
+}
+
+.tiptap-editor-wrapper .ProseMirror {
+  padding: 0.7rem 0.9rem;
+  min-height: 72px;
+  outline: none;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.tiptap-editor-wrapper .ProseMirror p { margin: 0; }
+.tiptap-editor-wrapper .ProseMirror strong { font-weight: 600; }
+.tiptap-editor-wrapper .ProseMirror em { font-style: italic; }
+.tiptap-editor-wrapper .ProseMirror u { text-decoration: underline; }
+.tiptap-editor-wrapper .ProseMirror a { color: var(--color-primary); }
+
+.text-block-editor textarea.admin-textarea,
+.text-block-editor input.admin-input {
+  margin-bottom: 0.65rem;
+}

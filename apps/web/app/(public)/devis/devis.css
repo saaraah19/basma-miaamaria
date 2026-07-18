@@ -1,0 +1,126 @@
+.devis-section {
+  padding: 5rem 1.5rem 6rem;
+  max-width: 680px;
+  margin: 0 auto;
+  background: var(--color-bg);
+}
+
+.devis-title {
+  font-family: var(--font-heading), serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.devis-subtitle {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.65;
+  margin-bottom: 3rem;
+}
+
+.devis-success {
+  background: #f0f7f2;
+  color: var(--color-primary);
+  border: 1px solid #c8dece;
+  border-radius: 10px;
+  padding: 0.85rem 1.2rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.devis-error {
+  background: #fdf2f2;
+  color: #c0392b;
+  border: 1px solid #f5c6c6;
+  border-radius: 10px;
+  padding: 0.85rem 1.2rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.devis-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.devis-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.devis-form label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.devis-form input,
+.devis-form textarea,
+.devis-form select {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.devis-form input:focus,
+.devis-form textarea:focus,
+.devis-form select:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(165, 135, 75, 0.1);
+}
+
+.devis-form textarea {
+  resize: none;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+.devis-form select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8680' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.devis-form button[type="submit"] {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  background: var(--color-accent);
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.devis-form button[type="submit"]:hover:not(:disabled) {
+  background: var(--color-secondary);
+  transform: translateY(-1px);
+}
+
+.devis-form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

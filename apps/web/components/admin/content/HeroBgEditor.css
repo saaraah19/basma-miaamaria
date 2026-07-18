@@ -1,0 +1,38 @@
+.hero-bg-editor {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--color-bg);
+  margin-bottom: 1rem;
+}
+
+.hero-bg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.hero-bg-preview {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 160px;
+  margin-bottom: 0.75rem;
+  background: var(--color-border);
+}
+
+.hero-bg-upload-label {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.hero-bg-upload-label input {
+  display: none;
+}
+
+.hero-bg-hint {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  margin-top: 0.5rem;
+}

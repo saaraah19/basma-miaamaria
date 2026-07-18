@@ -1,0 +1,77 @@
+.style-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.75rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  margin-bottom: 0.65rem;
+}
+
+.style-controls span {
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.style-control-color {
+  display: flex;
+  flex-direction: column;
+}
+
+.style-control-color input[type="color"] {
+  width: 32px;
+  height: 26px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 5px;
+  padding: 1px;
+  cursor: pointer;
+  background: var(--color-surface);
+}
+
+.style-control-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.style-control-buttons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.style-control-buttons button {
+  width: 28px;
+  height: 26px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 5px;
+  background: var(--color-surface);
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--color-text);
+}
+
+.style-control-buttons button.is-active {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.style-control-select {
+  display: flex;
+  flex-direction: column;
+}
+
+.style-control-select select {
+  padding: 0.25rem 0.4rem;
+  border: 1px solid var(--color-border-2);
+  border-radius: 5px;
+  font-size: 0.75rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}

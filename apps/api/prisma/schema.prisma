@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Content {
+  id        String   @id @default(cuid())
+  section   String
+  key       String
+  value     String
+  styles    Json?
+  updatedAt DateTime @updatedAt
+
+  @@unique([section, key])
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  icon        String
+  title       String
+  description String
+  order       Int      @default(0)
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id          String         @id @default(cuid())
+  // SEO-friendly, human-readable URL segment — generated once at creation
+  // (see projects.controller.js buildSlug) and never changed afterward so
+  // existing shared/indexed links keep working.
+  slug        String         @unique
+  title       String
+  category    String
+  description String
+  surface     String?
+  duration    String?
+  budget      String?
+  order       Int            @default(0)
+  isVisible   Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  images      ProjectImage[]
+
+  @@index([isVisible, order])
+}
+
+model ProjectImage {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url       String
+  publicId  String
+  alt       String?
+  order     Int      @default(0)
+  isCover   Boolean  @default(false)
+
+  @@index([projectId])
+}
+
+model Media {
+  id         String   @id @default(cuid())
+  url        String
+  publicId   String
+  filename   String
+  size       Int
+  uploadedAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model DevisRequest {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String
+  projectType String
+  surface     String?
+  budget      String?
+  details     String?
+  createdAt   DateTime @default(now())
+}
