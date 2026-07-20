@@ -14,12 +14,13 @@ export function useProjectsQuery() {
 }
 
 // Single-project fetch, used when a row is expanded to manage its images.
-// Goes through the public idOrSlug lookup — fine since it works by id too,
-// and this is only ever called with a known project.id from the table.
+// Goes through the protected admin route so a hidden draft's images are
+// still manageable before the project is published (the public route
+// 404s on masked projects by design).
 export function useProjectQuery(id) {
   return useQuery({
     queryKey: ["admin", "project", id],
-    queryFn: () => api.get(`/projects/${id}`).then((r) => r.data),
+    queryFn: () => api.get(`/projects/admin/${id}`).then((r) => r.data),
     enabled: Boolean(id),
   });
 }

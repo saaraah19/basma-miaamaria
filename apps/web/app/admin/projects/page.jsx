@@ -9,6 +9,7 @@ import {
   useProjectsQuery,
   useProjectQuery,
   useDeleteProject,
+  useUpdateProject,
 } from "@/lib/admin-queries";
 import "./projects.css";
 
@@ -27,6 +28,7 @@ function ProjectManagerContent() {
   );
   const { data: selectedProject } = useProjectQuery(selected);
   const deleteProject = useDeleteProject();
+  const updateProject = useUpdateProject();
 
   const handleDelete = async () => {
     await deleteProject.mutateAsync(toDelete.id);
@@ -85,6 +87,9 @@ function ProjectManagerContent() {
                   onToggleImages={() => setSelected(selected === p.id ? null : p.id)}
                   onEdit={() => { setEditProject(p); setShowForm(true); }}
                   onDelete={() => setToDelete(p)}
+                  onToggleVisibility={(project) =>
+                    updateProject.mutate({ id: project.id, data: { isVisible: !project.isVisible } })
+                  }
                 />
               ))}
             </tbody>
@@ -108,20 +113,45 @@ function ProjectManagerContent() {
   );
 }
 
-function ProjectRow({ project, isSelected, selectedProject, onToggleImages, onEdit, onDelete }) {
+function ProjectRow({ project, isSelected, selectedProject, onToggleImages, onEdit, onDelete, onToggleVisibility }) {
+  const imageCount = project.images?.length ?? 0;
+  const hasNoImages = imageCount === 0;
+
   return (
     <>
       <tr style={{ background: isSelected ? "var(--color-hover)" : undefined }}>
-        <td style={{ fontWeight: 500, paddingLeft: "1.5rem" }}>{project.title}</td>
+        <td style={{ fontWeight: 500, paddingLeft: "1.5rem" }}>
+          {project.title}
+          {hasNoImages && project.isVisible && (
+            <span className="no-image-warning" title="Ce projet est visible mais n'a aucune image">
+              ⚠️ Sans image
+            </span>
+          )}
+        </td>
         <td><span className="badge badge-gray">{project.category}</span></td>
-        <td style={{ color: "var(--color-muted)" }}>{project.images?.length ?? 0}</td>
+        <td style={{ color: "var(--color-muted)" }}>{imageCount}</td>
         <td>
-          <span className={`badge ${project.isVisible ? "badge-green" : "badge-gray"}`}>
+          <button
+            className={`badge-toggle ${project.isVisible ? "badge-green" : "badge-gray"}`}
+            onClick={() => onToggleVisibility(project)}
+            title={project.isVisible ? "Cliquer pour masquer" : "Cliquer pour rendre visible"}
+          >
             {project.isVisible ? "Visible" : "Masqué"}
-          </span>
+          </button>
         </td>
         <td>
           <div className="row-actions">
+            {project.isVisible && (
+              <a
+                className="btn-secondary"
+                style={{ fontSize: "0.775rem", padding: "0.4rem 0.75rem" }}
+                href={`${process.env.NEXT_PUBLIC_SITE_URL}/projects/${project.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                🔗 Voir
+              </a>
+            )}
             <button
               className={isSelected ? "btn-primary" : "btn-secondary"}
               style={{ fontSize: "0.775rem", padding: "0.4rem 0.75rem" }}

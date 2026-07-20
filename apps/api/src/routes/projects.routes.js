@@ -9,6 +9,7 @@ import {
   getProjects,
   getAllProjects,
   getProject,
+  getProjectForAdmin,
   createProject,
   updateProject,
   deleteProject,
@@ -29,6 +30,7 @@ router.get("/", getProjects);
 // Must be registered before "/:idOrSlug" — otherwise "admin" is parsed as
 // a project slug/id and this route is never reached.
 router.get("/admin/all", protect, getAllProjects);
+router.get("/admin/:id", protect, getProjectForAdmin);
 router.get("/:idOrSlug", getProject);
 router.post("/", protect, validate(projectCreateSchema), createProject);
 router.put("/:id", protect, validate(projectUpdateSchema), updateProject);

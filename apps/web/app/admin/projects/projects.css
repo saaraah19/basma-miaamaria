@@ -42,3 +42,36 @@
   color: var(--color-muted);
   margin-bottom: 0.75rem;
 }
+.badge-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.badge-toggle:hover {
+  opacity: 0.75;
+}
+
+.badge-toggle.badge-green {
+  background: #f0f7f2;
+  color: var(--color-primary);
+}
+
+.badge-toggle.badge-gray {
+  background: #f0f0ee;
+  color: var(--color-muted);
+}
+
+.no-image-warning {
+  display: inline-block;
+  margin-left: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #b45309;
+}

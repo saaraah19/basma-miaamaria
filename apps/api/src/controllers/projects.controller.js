@@ -3,9 +3,16 @@ import prisma from "../lib/prisma.js";
 import { cloudinary } from "../lib/cloudinary.js";
 // A route param that could be either a cuid (id) or a slug — try slug first
 // since that's what real URLs use; id lookup keeps any old links alive.
-const findProjectByIdOrSlug = (idOrSlug) =>
+// `requireVisible` is true for the public route (a masked project must
+// 404, matching what the admin toggle communicates) and false for the
+// admin-authenticated single-project fetch (used to manage a hidden
+// draft's images before publishing it).
+const findProjectByIdOrSlug = (idOrSlug, { requireVisible = false } = {}) =>
   prisma.project.findFirst({
-    where: { OR: [{ slug: idOrSlug }, { id: idOrSlug }] },
+    where: {
+      OR: [{ slug: idOrSlug }, { id: idOrSlug }],
+      ...(requireVisible ? { isVisible: true } : {}),
+    },
     include: { images: { orderBy: { order: "asc" } } },
   });
 
@@ -44,10 +51,10 @@ export const getAllProjects = async (req, res) => {
 // GET /api/projects/:idOrSlug — public
 export const getProject = async (req, res) => {
   try {
-    const project = await findProjectByIdOrSlug(req.params.idOrSlug);
+    const project = await findProjectByIdOrSlug(req.params.idOrSlug, { requireVisible: true });
     if (!project) return res.status(404).json({ error: "Projet introuvable." });
     res.json(project);
-  } catch {
+  } catch (err) {
     console.error("getProject error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
@@ -214,5 +221,17 @@ export const updateProjectImageAlt = async (req, res) => {
   } catch (err) {
     console.error("updateProjectImageAlt error:", err);
     res.status(404).json({ error: "Image introuvable." });
+  }
+};
+// GET /api/projects/admin/:id — protected, bypasses the isVisible filter
+// so a hidden draft's images can still be managed before publishing.
+export const getProjectForAdmin = async (req, res) => {
+  try {
+    const project = await findProjectByIdOrSlug(req.params.id);
+    if (!project) return res.status(404).json({ error: "Projet introuvable." });
+    res.json(project);
+  } catch (err) {
+    console.error("getProjectForAdmin error:", err);
+    res.status(500).json({ error: "Erreur serveur." });
   }
 };
