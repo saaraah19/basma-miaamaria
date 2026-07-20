@@ -12,7 +12,7 @@ import projectsRoutes from "./routes/projects.routes.js";
 import mediaRoutes from "./routes/media.routes.js";
 import formsRoutes from "./routes/forms.routes.js";
 import messagesRoutes from "./routes/messages.routes.js";
-
+import categoriesRoutes from "./routes/categories.routes.js";
 
 dotenv.config();
 
@@ -72,6 +72,7 @@ app.use("/api/projects", projectsRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api", formsRoutes);
 app.use("/api", messagesRoutes);
+app.use("/api/categories", categoriesRoutes);
 
 
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));

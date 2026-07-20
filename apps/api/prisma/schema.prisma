@@ -33,6 +33,14 @@ model Service {
   updatedAt   DateTime @updatedAt
 }
 
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+
 model Project {
   id          String         @id @default(cuid())
   // SEO-friendly, human-readable URL segment — generated once at creation

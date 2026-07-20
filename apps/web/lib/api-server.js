@@ -36,3 +36,5 @@ export const getProject = (idOrSlug) =>
   apiFetch(`/projects/${idOrSlug}`, { tags: ["projects", `project:${idOrSlug}`] });
 
 export const getServices = () => apiFetch("/services", { tags: ["services"] });
+
+export const getCategories = () => apiFetch("/categories", { tags: ["categories"] });

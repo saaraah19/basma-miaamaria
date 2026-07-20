@@ -142,6 +142,33 @@ export function useServiceMutations() {
   return { create, update, remove, reorder };
 }
 
+// ── Categories ───────────────────────────────────────────
+
+const CATEGORIES_KEY = ["admin", "categories"];
+
+export function useCategoriesQuery() {
+  return useQuery({
+    queryKey: CATEGORIES_KEY,
+    queryFn: () => api.get("/categories").then((r) => r.data),
+  });
+}
+
+export function useCategoryMutations() {
+  const queryClient = useQueryClient();
+  const invalidate = () => queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY });
+
+  const create = useMutation({
+    mutationFn: (data) => api.post("/categories", data).then((r) => r.data),
+    onSuccess: invalidate,
+  });
+  const remove = useMutation({
+    mutationFn: (id) => api.delete(`/categories/${id}`),
+    onSuccess: invalidate,
+  });
+
+  return { create, remove };
+}
+
 // ── Content ──────────────────────────────────────────────
 
 export function useSectionQuery(section) {

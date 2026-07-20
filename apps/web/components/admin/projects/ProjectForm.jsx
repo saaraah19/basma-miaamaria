@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { projectCreateSchema, PROJECT_CATEGORIES } from "@bsma/shared";
-import { useCreateProject, useUpdateProject } from "@/lib/admin-queries";
-import ImageUploader from "./ImageUploader";
+import { useEffect, useState } from "react";
+import { projectCreateSchema } from "@bsma/shared";
+import { useCreateProject, useUpdateProject, useCategoriesQuery } from "@/lib/admin-queries";
 import "./ProjectForm.css";
 
 const EMPTY_FORM = {
   title: "",
-  category: PROJECT_CATEGORIES[0],
+  category: "",
   description: "",
   surface: "",
   duration: "",
@@ -17,6 +16,8 @@ const EMPTY_FORM = {
 
 export default function ProjectForm({ project = null, onClose }) {
   const isEdit = Boolean(project);
+  const { data: categories = [], isLoading: categoriesLoading } = useCategoriesQuery();
+
   const [form, setForm] = useState(
     isEdit
       ? {
@@ -30,7 +31,14 @@ export default function ProjectForm({ project = null, onClose }) {
       : EMPTY_FORM
   );
   const [fieldErrors, setFieldErrors] = useState({});
-  const [createdProject, setCreatedProject] = useState(null);
+
+  // Default new projects to the first available category once the list
+  // loads — editing an existing project always keeps its saved value.
+  useEffect(() => {
+    if (!isEdit && !form.category && categories.length > 0) {
+      setForm((prev) => ({ ...prev, category: categories[0].name }));
+    }
+  }, [isEdit, categories, form.category]);
 
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
@@ -41,9 +49,6 @@ export default function ProjectForm({ project = null, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate with the exact same schema the API enforces — a client-side
-    // rejection here is never stricter or looser than what the server will
-    // actually accept, since both import from @bsma/shared.
     const result = projectCreateSchema.safeParse(form);
     if (!result.success) {
       const errors = {};
@@ -58,29 +63,14 @@ export default function ProjectForm({ project = null, onClose }) {
     try {
       if (isEdit) {
         await updateProject.mutateAsync({ id: project.id, data: result.data });
-        onClose();
       } else {
-        const created = await createProject.mutateAsync(result.data);
-        setCreatedProject(created);
+        await createProject.mutateAsync(result.data);
       }
+      onClose();
     } catch (err) {
       setFieldErrors({ _root: err.response?.data?.error ?? "Erreur lors de l'enregistrement." });
     }
   };
-
-if (createdProject) {
-    return (
-      <div className="project-form-overlay" onClick={onClose}>
-        <div className="project-form-box" onClick={(e) => e.stopPropagation()}>
-          <h2>Ajoute des images à &quot;{createdProject.title}&quot;</h2>
-          <ImageUploader projectId={createdProject.id} images={[]} />
-          <div className="project-form-actions">
-            <button className="btn-success" onClick={onClose}>Terminer</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="project-form-overlay" onClick={onClose}>
@@ -107,11 +97,16 @@ if (createdProject) {
               className="admin-select"
               value={form.category}
               onChange={(e) => set("category", e.target.value)}
+              disabled={categoriesLoading}
             >
-              {PROJECT_CATEGORIES.map((c) => (
-                <option key={c} value={c}>{c}</option>
+              {categories.length === 0 && (
+                <option value="">Aucune catégorie — ajoutez-en une d'abord</option>
+              )}
+              {categories.map((c) => (
+                <option key={c.id} value={c.name}>{c.name}</option>
               ))}
             </select>
+            {fieldErrors.category && <span className="field-error">{fieldErrors.category}</span>}
           </div>
 
           <div className="form-group">

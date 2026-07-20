@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject } from "@/lib/api-server";
-import ProjectGallery from "@/components/public/ProjectGallery";
+import ProjectGalleryLoader from "@/components/public/ProjectGalleryLoader";
 import "./project-detail.css";
 
 async function loadProject(slug) {
@@ -44,8 +44,7 @@ export default async function ProjectDetailPage({ params }) {
       <p className="projects-page-sub">{project.category}</p>
 
       <div className="project-detail">
-        <ProjectGallery images={project.images} projectTitle={project.title} />
-
+<ProjectGalleryLoader images={project.images} projectTitle={project.title} />
         <div className="project-detail-info">
           <h2>Description</h2>
           <p>{project.description}</p>

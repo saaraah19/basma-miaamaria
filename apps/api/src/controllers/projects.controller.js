@@ -16,6 +16,19 @@ const findProjectByIdOrSlug = (idOrSlug, { requireVisible = false } = {}) =>
     include: { images: { orderBy: { order: "asc" } } },
   });
 
+// A category string on a project must correspond to a real row in the
+// admin-managed Category table — otherwise a typo (or a category deleted
+// after the fact) creates a project the public filter nav can never surface.
+const assertValidCategory = async (category) => {
+  if (category === undefined) return; // not being touched on a partial update
+  const exists = await prisma.category.findUnique({ where: { name: category } });
+  if (!exists) {
+    const err = new Error("Catégorie invalide.");
+    err.status = 400;
+    throw err;
+  }
+};
+
 // GET /api/projects — public
 export const getProjects = async (req, res) => {
   try {
@@ -42,7 +55,7 @@ export const getAllProjects = async (req, res) => {
       include: { images: { orderBy: { order: "asc" } } },
     });
     res.json(projects);
-  } catch {
+  } catch (err){
     console.error("getAllProjects error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
@@ -64,13 +77,15 @@ export const getProject = async (req, res) => {
 export const createProject = async (req, res) => {
   try {
     const { title, category, description, surface, duration, budget, order } = req.body;
-    const slug = buildSlug(title);
+    await assertValidCategory(category);
+    const slug = await buildSlug(title);
     const project = await prisma.project.create({
       data: { title, slug, category, description, surface, duration, budget, order: order ?? 0 },
     });
     res.status(201).json(project);
-  } catch {
-    console.error("createProject error:", err);
+  } catch (err) {
+    if (err.status === 400) return res.status(400).json({ error: err.message });
+    console.error("Erreur createProject:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -81,6 +96,8 @@ export const updateProject = async (req, res) => {
     const existing = await prisma.project.findUnique({ where: { id: req.params.id } });
     if (!existing) return res.status(404).json({ error: "Projet introuvable." });
 
+    await assertValidCategory(req.body.category);
+
     // Re-slugging on every title edit would break existing shared/indexed
     // links, so the slug is generated once at creation and left alone.
     const project = await prisma.project.update({
@@ -88,8 +105,9 @@ export const updateProject = async (req, res) => {
       data: req.body,
     });
     res.json(project);
-  } catch {
-    console.error("updateProject error:", err);
+  } catch (err) {
+    if (err.status === 400) return res.status(400).json({ error: err.message });
+    console.error("Erreur updateProject:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -113,7 +131,7 @@ export const setProjectImageCover = async (req, res) => {
     ]);
 
     res.json({ message: "Cover mise à jour." });
-  } catch {
+  } catch(err) {
     console.error("setProjectImageCover error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
@@ -140,7 +158,7 @@ export const reorderProjectImages = async (req, res) => {
       )
     );
     res.json({ message: "Ordre mis à jour." });
-  } catch {
+  } catch (err){
     console.error("reorderProjectImages error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
@@ -155,7 +173,7 @@ export const deleteProject = async (req, res) => {
     await Promise.all(images.map((img) => cloudinary.uploader.destroy(img.publicId)));
     await prisma.project.delete({ where: { id: req.params.id } });
     res.json({ message: "Projet supprimé." });
-  } catch {
+  } catch (err){
     console.error("deleteProject error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
@@ -190,7 +208,7 @@ export const addProjectImages = async (req, res) => {
     );
 
     res.status(201).json(images);
-  } catch {
+  } catch (err){
     console.error("addProjectImages error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
@@ -205,7 +223,7 @@ export const deleteProjectImage = async (req, res) => {
     await cloudinary.uploader.destroy(image.publicId);
     await prisma.projectImage.delete({ where: { id: image.id } });
     res.json({ message: "Image supprimée." });
-  } catch {
+  } catch (err) {
     res.status(500).json({ error: "Erreur serveur." });
   }
 };

@@ -153,6 +153,17 @@ async function main() {
   }
   console.log("✓ Services");
 
+// ── 8b. Catégories ───────────────────────────────────
+  const categoryNames = ["Architecture", "Décoration intérieure", "Rénovation"];
+  for (const [i, name] of categoryNames.entries()) {
+    await prisma.category.upsert({
+      where: { name },
+      update: {},
+      create: { name, order: i },
+    });
+  }
+  console.log("✓ Catégories");
+
   // ── 9. Projets ───────────────────────────────────────
   const projects = [
     { title: "Maison Contemporaine", category: "Architecture", description: "Projet de maison contemporaine avec volumes ouverts, matériaux naturels et grandes baies vitrées.", surface: "120 m²", duration: "3-6 mois", budget: "Sur demande", order: 0 },

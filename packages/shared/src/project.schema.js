@@ -1,27 +1,17 @@
 import { z } from "zod";
 
-/**
- * Categories are a closed set on purpose — an open free-text category field
- * is how you end up with "Architecture", "architecture", "Archi " as three
- * different filter buckets six months from now.
- */
-export const PROJECT_CATEGORIES = [
-  "Architecture",
-  "Décoration intérieure",
-  "Rénovation",
-];
-
 const slugSafe = z
   .string()
   .trim()
   .min(2, "Le titre doit contenir au moins 2 caractères.")
   .max(120, "Le titre est trop long (120 caractères max).");
 
+// Category is no longer a closed enum — it's validated at the API layer
+// against the admin-managed Category table (see projects.controller.js
+// assertValidCategory). Here we only guard shape/length.
 export const projectCreateSchema = z.object({
   title: slugSafe,
-  category: z.enum(PROJECT_CATEGORIES, {
-    errorMap: () => ({ message: "Catégorie invalide." }),
-  }),
+  category: z.string().trim().min(1, "Catégorie requise.").max(60, "Catégorie invalide."),
   description: z
     .string()
     .trim()
@@ -44,11 +34,9 @@ export const projectReorderImagesSchema = z.array(
     order: z.number().int().min(0),
   })
 );
+// Validates the PATCH /projects/images/:imageId body — updates only the
+// alt-text field on a single image, independent of the reorder/cover
+// endpoints.
 export const projectImageAltSchema = z.object({
-  alt: z
-    .string()
-    .trim()
-    .max(200, "Texte alternatif trop long (200 caractères max).")
-    .optional()
-    .or(z.literal("")),
+  alt: z.string().trim().max(200, "Texte alternatif trop long (200 caractères max).").optional().or(z.literal("")),
 });

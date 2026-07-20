@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { PROJECT_CATEGORIES } from "@bsma/shared";
-import { getProjects } from "@/lib/api-server";
+import { getProjects, getCategories } from "@/lib/api-server";
 import ProjectCard from "@/components/public/ProjectCard";
 import "./projects.css";
 
@@ -15,9 +14,15 @@ const ALL_LABEL = "Tous";
 
 export default async function ProjectsPage({ searchParams }) {
   const { category } = await searchParams;
-  const activeCategory = category && PROJECT_CATEGORIES.includes(category) ? category : ALL_LABEL;
 
-  const projects = await getProjects().catch(() => []);
+  const [projects, categories] = await Promise.all([
+    getProjects().catch(() => []),
+    getCategories().catch(() => []),
+  ]);
+
+  const categoryNames = categories.map((c) => c.name);
+  const activeCategory = category && categoryNames.includes(category) ? category : ALL_LABEL;
+
   const filtered =
     activeCategory === ALL_LABEL ? projects : projects.filter((p) => p.category === activeCategory);
 
@@ -26,7 +31,7 @@ export default async function ProjectsPage({ searchParams }) {
       <h1 className="projects-page-title">Nos Projets</h1>
 
       <nav className="projects-filters" aria-label="Filtrer par catégorie">
-        {[ALL_LABEL, ...PROJECT_CATEGORIES].map((cat) => {
+        {[ALL_LABEL, ...categoryNames].map((cat) => {
           const href = cat === ALL_LABEL ? "/projects" : `/projects?category=${encodeURIComponent(cat)}`;
           return (
             <Link
