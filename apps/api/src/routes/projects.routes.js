@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { projectCreateSchema, projectUpdateSchema, projectReorderImagesSchema } from "@bsma/shared";
+import {
+  projectCreateSchema,
+  projectUpdateSchema,
+  projectReorderImagesSchema,
+  projectImageAltSchema,
+} from "@bsma/shared";
 import {
   getProjects,
   getAllProjects,
@@ -11,6 +16,7 @@ import {
   deleteProjectImage,
   setProjectImageCover,
   reorderProjectImages,
+  updateProjectImageAlt,
 } from "../controllers/projects.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 import { validate } from "../middleware/validate.js";
@@ -36,6 +42,7 @@ router.post(
 );
 router.delete("/images/:imageId", protect, deleteProjectImage);
 router.patch("/images/:imageId/cover", protect, setProjectImageCover);
+router.patch("/images/:imageId", protect, validate(projectImageAltSchema), updateProjectImageAlt);
 router.patch(
   "/:id/images/reorder",
   protect,

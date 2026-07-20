@@ -88,6 +88,17 @@ export function useSetProjectImageCover() {
   });
 }
 
+export function useUpdateProjectImageAlt() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ imageId, alt }) => api.patch(`/projects/images/${imageId}`, { alt }),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "project", variables.projectId] });
+      queryClient.invalidateQueries({ queryKey: PROJECTS_KEY });
+    },
+  });
+}
+
 export function useReorderProjectImages() {
   const queryClient = useQueryClient();
   return useMutation({

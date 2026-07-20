@@ -21,6 +21,7 @@ import {
   useDeleteProjectImage,
   useSetProjectImageCover,
   useReorderProjectImages,
+  useUpdateProjectImageAlt,
 } from "@/lib/admin-queries";
 import ConfirmModal from "@/components/admin/shared/ConfirmModal";
 import "./ImageUploader.css";
@@ -28,10 +29,11 @@ import "./ImageUploader.css";
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE_BYTES = 8 * 1024 * 1024;
 
-function SortableImage({ img, onDelete, onSetCover }) {
+function SortableImage({ img, onDelete, onSetCover, onAltChange }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: img.id,
   });
+  const [altValue, setAltValue] = useState(img.alt ?? "");
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -40,17 +42,29 @@ function SortableImage({ img, onDelete, onSetCover }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className={`image-item ${img.isCover ? "is-cover" : ""}`}>
-      <div className="drag-handle" {...attributes} {...listeners}>⠿</div>
-      {img.isCover && <span className="cover-badge">Cover</span>}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={cldUrl(img.url, { w: 300 })} alt={img.alt ?? ""} loading="lazy" />
-      <div className="image-item-actions">
-        {!img.isCover && (
-          <button className="btn-cover" onClick={() => onSetCover(img)}>⭐ Cover</button>
-        )}
-        <button className="btn-del" onClick={() => onDelete(img)}>🗑 Suppr.</button>
+    <div ref={setNodeRef} style={style} className="image-cell">
+      <div className={`image-item ${img.isCover ? "is-cover" : ""}`}>
+        <div className="drag-handle" {...attributes} {...listeners}>⠿</div>
+        {img.isCover && <span className="cover-badge">Cover</span>}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={cldUrl(img.url, { w: 300 })} alt={img.alt ?? ""} loading="lazy" />
+        <div className="image-item-actions">
+          {!img.isCover && (
+            <button className="btn-cover" onClick={() => onSetCover(img)}>⭐ Cover</button>
+          )}
+          <button className="btn-del" onClick={() => onDelete(img)}>🗑 Suppr.</button>
+        </div>
       </div>
+      <input
+        className="image-alt-input"
+        type="text"
+        placeholder="Texte alternatif (SEO)"
+        value={altValue}
+        onChange={(e) => setAltValue(e.target.value)}
+        onBlur={() => {
+          if (altValue !== (img.alt ?? "")) onAltChange(img, altValue);
+        }}
+      />
     </div>
   );
 }
@@ -62,10 +76,11 @@ export default function ImageUploader({ projectId, images = [] }) {
   const [localImages, setLocalImages] = useState(null);
   const [uploadError, setUploadError] = useState("");
 
-  const addImages = useAddProjectImages();
+const addImages = useAddProjectImages();
   const deleteImage = useDeleteProjectImage();
   const setCover = useSetProjectImageCover();
   const reorder = useReorderProjectImages();
+  const updateAlt = useUpdateProjectImageAlt();
 
   const sensors = useSensors(useSensor(PointerSensor));
   const displayed = localImages ?? images;
@@ -149,6 +164,7 @@ export default function ImageUploader({ projectId, images = [] }) {
                   img={img}
                   onDelete={setToDelete}
                   onSetCover={(image) => setCover.mutate({ imageId: image.id, projectId })}
+                  onAltChange={(image, alt) => updateAlt.mutate({ imageId: image.id, alt, projectId })}
                 />
               ))}
             </div>

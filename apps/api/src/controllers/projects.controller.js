@@ -202,3 +202,17 @@ export const deleteProjectImage = async (req, res) => {
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
+// PATCH /api/projects/images/:imageId — protected, body already validated
+export const updateProjectImageAlt = async (req, res) => {
+  try {
+    const { alt } = req.body;
+    const image = await prisma.projectImage.update({
+      where: { id: req.params.imageId },
+      data: { alt: alt || null },
+    });
+    res.json(image);
+  } catch (err) {
+    console.error("updateProjectImageAlt error:", err);
+    res.status(404).json({ error: "Image introuvable." });
+  }
+};

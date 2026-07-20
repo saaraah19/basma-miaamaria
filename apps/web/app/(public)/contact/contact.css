@@ -269,3 +269,9 @@
   .contact-content { padding: 2rem 1rem; }
   .contact-form-wrapper, .contact-info { padding: 1.5rem; }
 }
+.field-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #c0392b;
+}

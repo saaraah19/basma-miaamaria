@@ -44,3 +44,11 @@ export const projectReorderImagesSchema = z.array(
     order: z.number().int().min(0),
   })
 );
+export const projectImageAltSchema = z.object({
+  alt: z
+    .string()
+    .trim()
+    .max(200, "Texte alternatif trop long (200 caractères max).")
+    .optional()
+    .or(z.literal("")),
+});

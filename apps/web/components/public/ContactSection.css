@@ -163,3 +163,10 @@
   .contact-title { font-size: 2rem; }
   .contact-container { flex-direction: column; align-items: center; }
 }
+
+.field-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #c0392b;
+}
