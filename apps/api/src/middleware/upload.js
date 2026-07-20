@@ -18,6 +18,7 @@ export const handleUpload = (multerMiddleware) => (req, res, next) => {
     }
     if (err) {
       // Our custom fileFilter error (wrong mimetype)
+      console.error("Upload error:", err); 
       return res.status(400).json({ error: err.message });
     }
     next();

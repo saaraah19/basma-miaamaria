@@ -45,7 +45,9 @@ export const getSection = async (req, res) => {
       result[item.key] = { value: item.value, styles: item.styles };
     });
     res.json(result);
-  } catch {
+  } catch(err) {
+       console.error("getSection error:", err);
+
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -101,7 +103,8 @@ export const updateContent = async (req, res) => {
     });
 
     res.json(content);
-  } catch {
+  } catch (err){
+       console.error("updateContent error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };

@@ -21,7 +21,7 @@ export const login = async (req, res) => {
 
     const user = await prisma.user.findUnique({ where: { email } });
     // LOG DE CONTRÔLE : Permet de voir si Prisma trouve l'utilisateur
-    console.log("Utilisateur trouvé en BDD :", user);
+    // console.log("Utilisateur trouvé en BDD :", user);
     // Deliberately identical error for "no such user" and "wrong password" —
     // distinguishing them lets an attacker enumerate valid admin emails.
     const invalid = () =>
@@ -42,6 +42,7 @@ export const login = async (req, res) => {
     // No token in the response body — the cookie is the only place it lives.
     res.json({ success: true, user: { email: user.email } });
   } catch {
+    console.error("login error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };

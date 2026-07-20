@@ -5,12 +5,7 @@ import pg from "pg";
 const { Pool } = pg;
 import "dotenv/config";
 import bcrypt from "bcryptjs";
-import slugify from "slugify";
-import { customAlphabet } from "nanoid";
-
-const nanoid = customAlphabet("23456789abcdefghjkmnpqrstuvwxyz", 6);
-const buildSlug = (title) => `${slugify(title, { lower: true, strict: true })}-${nanoid()}`;
-
+import { buildSlug } from "@bsma/shared";
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });

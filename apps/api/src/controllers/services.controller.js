@@ -5,7 +5,8 @@ export const getServices = async (req, res) => {
   try {
     const services = await prisma.service.findMany({ orderBy: { order: "asc" } });
     res.json(services);
-  } catch {
+ } catch (err) {
+  console.error("getServices error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -18,7 +19,8 @@ export const createService = async (req, res) => {
       data: { icon, title, description, order: order ?? 0 },
     });
     res.status(201).json(service);
-  } catch {
+  } catch(err) {
+console.error("createService error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -34,8 +36,8 @@ export const updateService = async (req, res) => {
       data: req.body,
     });
     res.json(service);
-  } catch {
-    res.status(500).json({ error: "Erreur serveur." });
+ } catch (err) {
+    console.error("updateService error:", err);    res.status(500).json({ error: "Erreur serveur." });
   }
 };
 
@@ -47,8 +49,8 @@ export const deleteService = async (req, res) => {
 
     await prisma.service.delete({ where: { id: req.params.id } });
     res.json({ message: "Service supprimé." });
-  } catch {
-    res.status(500).json({ error: "Erreur serveur." });
+  } catch (err) {
+  console.error("deleteService error:", err);    res.status(500).json({ error: "Erreur serveur." });
   }
 };
 
@@ -65,7 +67,7 @@ export const reorderServices = async (req, res) => {
       updates.map((u) => prisma.service.update({ where: { id: u.id }, data: { order: u.order } }))
     );
     res.json({ message: "Ordre mis à jour." });
-  } catch {
-    res.status(500).json({ error: "Erreur serveur." });
+ } catch (err) {
+ console.error("reorderServices error:", err);    res.status(500).json({ error: "Erreur serveur." });
   }
 };

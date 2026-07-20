@@ -11,6 +11,8 @@ import servicesRoutes from "./routes/services.routes.js";
 import projectsRoutes from "./routes/projects.routes.js";
 import mediaRoutes from "./routes/media.routes.js";
 import formsRoutes from "./routes/forms.routes.js";
+import messagesRoutes from "./routes/messages.routes.js";
+
 
 dotenv.config();
 
@@ -69,6 +71,8 @@ app.use("/api/services", servicesRoutes);
 app.use("/api/projects", projectsRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api", formsRoutes);
+app.use("/api", messagesRoutes);
+
 
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 

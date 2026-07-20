@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { projectCreateSchema, PROJECT_CATEGORIES } from "@bsma/shared";
 import { useCreateProject, useUpdateProject } from "@/lib/admin-queries";
+import ImageUploader from "./ImageUploader";
 import "./ProjectForm.css";
 
 const EMPTY_FORM = {
@@ -29,6 +30,7 @@ export default function ProjectForm({ project = null, onClose }) {
       : EMPTY_FORM
   );
   const [fieldErrors, setFieldErrors] = useState({});
+  const [createdProject, setCreatedProject] = useState(null);
 
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
@@ -56,14 +58,29 @@ export default function ProjectForm({ project = null, onClose }) {
     try {
       if (isEdit) {
         await updateProject.mutateAsync({ id: project.id, data: result.data });
+        onClose();
       } else {
-        await createProject.mutateAsync(result.data);
+        const created = await createProject.mutateAsync(result.data);
+        setCreatedProject(created);
       }
-      onClose();
     } catch (err) {
       setFieldErrors({ _root: err.response?.data?.error ?? "Erreur lors de l'enregistrement." });
     }
   };
+
+if (createdProject) {
+    return (
+      <div className="project-form-overlay" onClick={onClose}>
+        <div className="project-form-box" onClick={(e) => e.stopPropagation()}>
+          <h2>Ajoute des images à &quot;{createdProject.title}&quot;</h2>
+          <ImageUploader projectId={createdProject.id} images={[]} />
+          <div className="project-form-actions">
+            <button className="btn-success" onClick={onClose}>Terminer</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="project-form-overlay" onClick={onClose}>

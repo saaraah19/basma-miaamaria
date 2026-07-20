@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: "/admin/projects", icon: "🏗️", label: "Projets" },
   { href: "/admin/content", icon: "✏️", label: "Contenu" },
   { href: "/admin/media", icon: "🖼️", label: "Médias" },
+  { href: "/admin/messages", icon: "✉️", label: "Messages" },
 ];
 
 export default function AdminLayout({ title, children }) {

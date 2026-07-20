@@ -1,19 +1,6 @@
-import slugify from "slugify";
-import { customAlphabet } from "nanoid";
+import { buildSlug } from "@bsma/shared";
 import prisma from "../lib/prisma.js";
 import { cloudinary } from "../lib/cloudinary.js";
-
-// Short, URL-safe, no ambiguous characters (no 0/O/1/I) so it reads cleanly
-// if it ever ends up visible, e.g. shared in a chat.
-const nanoid = customAlphabet("23456789abcdefghjkmnpqrstuvwxyz", 6);
-
-const buildSlug = async (title) => {
-  const base = slugify(title, { lower: true, strict: true }).slice(0, 80);
-  // A short random suffix means two projects titled the same thing never
-  // collide, without needing a retry-loop against the DB.
-  return `${base}-${nanoid()}`;
-};
-
 // A route param that could be either a cuid (id) or a slug — try slug first
 // since that's what real URLs use; id lookup keeps any old links alive.
 const findProjectByIdOrSlug = (idOrSlug) =>
@@ -32,6 +19,7 @@ export const getProjects = async (req, res) => {
     });
     res.json(projects);
   } catch {
+    console.error("getProjects error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -48,6 +36,7 @@ export const getAllProjects = async (req, res) => {
     });
     res.json(projects);
   } catch {
+    console.error("getAllProjects error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -59,6 +48,7 @@ export const getProject = async (req, res) => {
     if (!project) return res.status(404).json({ error: "Projet introuvable." });
     res.json(project);
   } catch {
+    console.error("getProject error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -67,12 +57,13 @@ export const getProject = async (req, res) => {
 export const createProject = async (req, res) => {
   try {
     const { title, category, description, surface, duration, budget, order } = req.body;
-    const slug = await buildSlug(title);
+    const slug = buildSlug(title);
     const project = await prisma.project.create({
       data: { title, slug, category, description, surface, duration, budget, order: order ?? 0 },
     });
     res.status(201).json(project);
   } catch {
+    console.error("createProject error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -91,6 +82,7 @@ export const updateProject = async (req, res) => {
     });
     res.json(project);
   } catch {
+    console.error("updateProject error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -115,6 +107,7 @@ export const setProjectImageCover = async (req, res) => {
 
     res.json({ message: "Cover mise à jour." });
   } catch {
+    console.error("setProjectImageCover error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -141,6 +134,7 @@ export const reorderProjectImages = async (req, res) => {
     );
     res.json({ message: "Ordre mis à jour." });
   } catch {
+    console.error("reorderProjectImages error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -155,6 +149,7 @@ export const deleteProject = async (req, res) => {
     await prisma.project.delete({ where: { id: req.params.id } });
     res.json({ message: "Projet supprimé." });
   } catch {
+    console.error("deleteProject error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
@@ -189,6 +184,7 @@ export const addProjectImages = async (req, res) => {
 
     res.status(201).json(images);
   } catch {
+    console.error("addProjectImages error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };

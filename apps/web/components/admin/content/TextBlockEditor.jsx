@@ -64,7 +64,7 @@ function RichTextToolbar({ editor }) {
   );
 }
 
-function RichTextField({ initialValue, onGetValue }) {
+function RichTextField({ initialValue, onGetValue, onTouched }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -73,6 +73,7 @@ function RichTextField({ initialValue, onGetValue }) {
     ],
     content: initialValue || "<p></p>",
     immediatelyRender: false,
+    onUpdate: () => onTouched?.(),
   });
 
   // Expose the current HTML to the parent's save handler without lifting
@@ -105,9 +106,24 @@ export default function TextBlockEditor({
   const [styles, setStyles] = useState(initialStyles ?? {});
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [touched, setTouched] = useState(false);
   const getRichValueRef = useRef(() => initialValue);
 
   const { mutate, isPending } = useUpdateContentBlock(section);
+
+  const isPlainDirty = type !== "richText" && plainValue !== initialValue;
+  const isStylesDirty = supportsStyles && JSON.stringify(styles) !== JSON.stringify(initialStyles ?? {});
+  const dirty = touched || isPlainDirty || isStylesDirty;
+
+  useEffect(() => {
+    if (!dirty) return;
+    const handler = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [dirty]);
 
   const handleSave = () => {
     setError("");
@@ -121,11 +137,12 @@ export default function TextBlockEditor({
       }
     }
 
-    mutate(
+   mutate(
       { key: blockKey, value, styles: supportsStyles ? styles : undefined },
       {
         onSuccess: () => {
           setSaved(true);
+          setTouched(false);
           setTimeout(() => setSaved(false), 2000);
         },
         onError: (err) => setError(err.response?.data?.error ?? "Erreur lors de la sauvegarde."),
@@ -135,8 +152,9 @@ export default function TextBlockEditor({
 
   return (
     <div className="text-block-editor">
-      <div className="text-block-editor-header">
+     <div className="text-block-editor-header">
         <span className="text-block-label">{label}</span>
+        {dirty && !saved && <span className="dirty-indicator">● non sauvegardé</span>}
         {saved && <span className="save-indicator">✓ Sauvegardé</span>}
       </div>
 
@@ -148,6 +166,7 @@ export default function TextBlockEditor({
         <RichTextField
           initialValue={initialValue}
           onGetValue={(getter) => { getRichValueRef.current = getter; }}
+          onTouched={() => setTouched(true)}
         />
       )}
 

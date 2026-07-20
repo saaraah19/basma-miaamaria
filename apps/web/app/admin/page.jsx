@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { useProjectsQuery, useServicesQuery } from "@/lib/admin-queries";
+import { useProjectsQuery, useServicesQuery, useMessagesQuery, useDevisRequestsQuery } from "@/lib/admin-queries";
 import "./dashboard.css";
 
 function StatCard({ icon, label, value, href }) {
@@ -32,12 +32,16 @@ function QuickAction({ icon, label, desc, href }) {
 function DashboardContent() {
   const { data: projects = [] } = useProjectsQuery();
   const { data: services = [] } = useServicesQuery();
+  const { data: messages = [] } = useMessagesQuery();
+  const { data: devis = [] } = useDevisRequestsQuery();
+  const unread = messages.filter((m) => !m.isRead).length + devis.filter((d) => !d.isRead).length;
 
   return (
     <>
       <div className="stats-grid">
         <StatCard icon="🏗️" label="Projets" value={projects.length} href="/admin/projects" />
         <StatCard icon="🛋️" label="Services" value={services.length} href="/admin/content" />
+        <StatCard icon="✉️" label="Demandes non lues" value={unread} href="/admin/messages" />
       </div>
 
       <div className="admin-card">

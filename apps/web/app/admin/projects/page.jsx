@@ -17,8 +17,14 @@ function ProjectManagerContent() {
   const [editProject, setEditProject] = useState(null);
   const [toDelete, setToDelete] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [search, setSearch] = useState("");
 
   const { data: projects = [], isLoading } = useProjectsQuery();
+  const filteredProjects = projects.filter(
+    (p) =>
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.category.toLowerCase().includes(search.toLowerCase())
+  );
   const { data: selectedProject } = useProjectQuery(selected);
   const deleteProject = useDeleteProject();
 
@@ -42,13 +48,21 @@ function ProjectManagerContent() {
         </button>
       </div>
 
+      <input
+        className="admin-input"
+        placeholder="Rechercher un projet (titre ou catégorie)..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{ marginBottom: "1rem", maxWidth: "320px" }}
+      />
+
       <div className="admin-card" style={{ padding: 0, overflow: "hidden" }}>
         {isLoading ? (
           <p className="projects-loading">Chargement…</p>
-        ) : projects.length === 0 ? (
+        ) : filteredProjects.length === 0 ? (
           <div className="empty-state">
             <p style={{ fontSize: "2rem" }}>🏗️</p>
-            <p>Aucun projet pour l&apos;instant.</p>
+            <p>{projects.length === 0 ? "Aucun projet pour l'instant." : "Aucun résultat pour cette recherche."}</p>
           </div>
         ) : (
           <table className="admin-table">
@@ -62,7 +76,7 @@ function ProjectManagerContent() {
               </tr>
             </thead>
             <tbody>
-              {projects.map((p) => (
+              {filteredProjects.map((p) => (
                 <ProjectRow
                   key={p.id}
                   project={p}

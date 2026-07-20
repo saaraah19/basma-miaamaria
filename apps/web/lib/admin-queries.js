@@ -184,3 +184,50 @@ export function useMediaMutations() {
 
   return { upload, remove };
 }
+// ── Messages & Devis ─────────────────────────────────────
+
+export function useMessagesQuery() {
+  return useQuery({
+    queryKey: ["admin", "messages"],
+    queryFn: () => api.get("/messages").then((r) => r.data),
+  });
+}
+
+export function useDevisRequestsQuery() {
+  return useQuery({
+    queryKey: ["admin", "devis-requests"],
+    queryFn: () => api.get("/devis-requests").then((r) => r.data),
+  });
+}
+
+export function useMarkMessageRead() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => api.patch(`/messages/${id}/read`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "messages"] }),
+  });
+}
+
+export function useMarkDevisRead() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => api.patch(`/devis-requests/${id}/read`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "devis-requests"] }),
+  });
+}
+
+export function useDeleteMessage() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => api.delete(`/messages/${id}`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "messages"] }),
+  });
+}
+
+export function useDeleteDevisRequest() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => api.delete(`/devis-requests/${id}`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "devis-requests"] }),
+  });
+}

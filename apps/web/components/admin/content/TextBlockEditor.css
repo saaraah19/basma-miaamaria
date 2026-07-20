@@ -118,3 +118,8 @@
 .text-block-editor input.admin-input {
   margin-bottom: 0.65rem;
 }
+.dirty-indicator {
+  font-size: 0.775rem;
+  color: #b45309;
+  font-weight: 500;
+}

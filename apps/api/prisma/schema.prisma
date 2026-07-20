@@ -83,7 +83,10 @@ model ContactMessage {
   phone     String?
   subject   String
   message   String
+  isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  @@index([isRead])
 }
 
 model DevisRequest {
@@ -95,5 +98,8 @@ model DevisRequest {
   surface     String?
   budget      String?
   details     String?
+  isRead      Boolean  @default(false)
   createdAt   DateTime @default(now())
+
+  @@index([isRead])
 }
