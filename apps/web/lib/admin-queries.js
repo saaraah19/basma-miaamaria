@@ -13,6 +13,19 @@ export function useProjectsQuery() {
   });
 }
 
+async function triggerRevalidate(tag) {
+  try {
+    await fetch("/api/revalidate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tag, secret: process.env.NEXT_PUBLIC_REVALIDATE_SECRET }),
+    });
+  } catch {
+    // Best-effort — worst case the page just waits out the 60s window.
+  }
+}
+
+
 // Single-project fetch, used when a row is expanded to manage its images.
 // Goes through the protected admin route so a hidden draft's images are
 // still manageable before the project is published (the public route
@@ -185,12 +198,7 @@ export function useUpdateContentBlock(section) {
       api.put(`/content/${section}/${key}`, { value, styles }).then((r) => r.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "content", section] });
-      // Public pages read this same section via ISR-tagged server fetches —
-      // they'll pick up the change within the tag's revalidate window, but
-      // there's no on-demand revalidateTag call from the client here (that
-      // requires a signed request to a route handler). Worth adding once
-      // this goes to production if instant reflection matters more than
-      // the ~60s ISR window.
+      triggerRevalidate(`content:${section}`);
     },
   });
 }

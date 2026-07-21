@@ -1,74 +1,161 @@
 "use client";
 
-import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Thumbs, Autoplay } from "swiper/modules";
+import { useCallback, useEffect, useState } from "react";
 import { cldUrl } from "@/lib/cloudinary-url";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/thumbs";
+import "./ProjectGallery.css";
 
 export default function ProjectGallery({ images, projectTitle }) {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [active, setActive] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    setActive(0);
+  }, [images]);
+
+  const goTo = useCallback(
+    (index) => {
+      if (!images || images.length === 0) return;
+      setActive(((index % images.length) + images.length) % images.length);
+    },
+    [images]
+  );
+
+  // Lock body scroll while the lightbox is open, and wire up keyboard nav.
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setLightboxOpen(false);
+      if (e.key === "ArrowLeft") goTo(active - 1);
+      if (e.key === "ArrowRight") goTo(active + 1);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lightboxOpen, active, goTo]);
 
   if (!images || images.length === 0) return null;
 
+  const hasMultiple = images.length > 1;
+  const current = images[active];
+
   return (
     <div className="project-gallery">
-      <div className="project-main">
-        <Swiper
-          modules={[Navigation, Pagination, Thumbs, Autoplay]}
-          navigation
-          pagination={{ clickable: true }}
-          thumbs={{ swiper: thumbsSwiper }}
-          autoplay={images.length > 1 ? { delay: 4000, disableOnInteraction: true } : false}
-          loop={images.length > 1}
-          className="main-swiper"
+      <div className="gallery-main">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          key={current.id}
+          src={cldUrl(current.url, { w: 1200 })}
+          alt={current.alt || `${projectTitle} — vue ${active + 1}`}
+          className="gallery-main-image"
+          loading="eager"
+          onClick={() => setLightboxOpen(true)}
+        />
+        <button
+          type="button"
+          className="gallery-zoom-hint"
+          onClick={() => setLightboxOpen(true)}
+          aria-label="Agrandir l'image"
         >
-          {images.map((img, i) => (
-            <SwiperSlide key={img.id}>
-              <div className="main-slide-frame">
-                {/* Switched from next/image's `fill` mode to a plain <img>
-                    tag — `fill` was rendering a blank/black frame inside
-                    the Swiper slide (likely fill's sizing not resolving
-                    correctly against Swiper's own transform/flex layout).
-                    This mirrors the thumbnail row below, which already
-                    uses a plain <img> with the same cldUrl() helper and
-                    renders correctly. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={cldUrl(img.url, { w: 1200 })}
-                  alt={img.alt || `${projectTitle} — vue ${i + 1}`}
-                  loading={i === 0 ? "eager" : "lazy"}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          🔍
+        </button>
+
+        {hasMultiple && (
+          <>
+            <button
+              type="button"
+              className="gallery-arrow gallery-arrow-prev"
+              onClick={() => goTo(active - 1)}
+              aria-label="Image précédente"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              className="gallery-arrow gallery-arrow-next"
+              onClick={() => goTo(active + 1)}
+              aria-label="Image suivante"
+            >
+              ›
+            </button>
+            <div className="gallery-counter">
+              {active + 1} / {images.length}
+            </div>
+          </>
+        )}
       </div>
 
-      {images.length > 1 && (
-        <div className="project-thumbs">
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            modules={[Thumbs]}
-            slidesPerView={4}
-            spaceBetween={8}
-            watchSlidesProgress
-            className="thumbs-swiper"
+      {hasMultiple && (
+        <div className="gallery-thumbs">
+          {images.map((img, i) => (
+            <button
+              type="button"
+              key={img.id}
+              className={`gallery-thumb${i === active ? " is-active" : ""}`}
+              onClick={() => goTo(i)}
+              aria-label={`Voir l'image ${i + 1}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={cldUrl(img.url, { w: 160 })} alt="" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {lightboxOpen && (
+        <div
+          className="gallery-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${projectTitle} — visionneuse d'images`}
+          onClick={() => setLightboxOpen(false)}
+        >
+          <button
+            type="button"
+            className="lightbox-close"
+            onClick={() => setLightboxOpen(false)}
+            aria-label="Fermer"
           >
-            {images.map((img, i) => (
-              <SwiperSlide key={img.id} className="thumb-slide">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={cldUrl(img.url, { w: 160 })}
-                  alt={`Vignette ${i + 1} — ${projectTitle}`}
-                  loading="lazy"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            ✕
+          </button>
+
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={cldUrl(current.url, { w: 1920 })}
+            alt={current.alt || `${projectTitle} — vue ${active + 1}`}
+            className="lightbox-image"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {hasMultiple && (
+            <>
+              <button
+                type="button"
+                className="lightbox-arrow lightbox-arrow-prev"
+                onClick={(e) => { e.stopPropagation(); goTo(active - 1); }}
+                aria-label="Image précédente"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="lightbox-arrow lightbox-arrow-next"
+                onClick={(e) => { e.stopPropagation(); goTo(active + 1); }}
+                aria-label="Image suivante"
+              >
+                ›
+              </button>
+              <div className="lightbox-counter">
+                {active + 1} / {images.length}
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
