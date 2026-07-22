@@ -5,5 +5,7 @@ const ALLOWED_ATTR = ["href", "target", "rel"];
 
 export const sanitize = (html) => {
   if (!html) return "";
-  return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR });
+  const result = DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR });
+  console.log("sanitize in:", JSON.stringify(html)?.slice(0, 60), "-> out:", JSON.stringify(result)?.slice(0, 60));
+  return result;
 };

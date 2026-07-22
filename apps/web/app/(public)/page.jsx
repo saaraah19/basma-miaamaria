@@ -3,7 +3,7 @@ import HeroSection from "@/components/public/HeroSection";
 import ServicesSection from "@/components/public/ServicesSection";
 import ProjectsSection from "@/components/public/ProjectsSection";
 import ContactSection from "@/components/public/ContactSection";
-
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Accueil",
   description:
