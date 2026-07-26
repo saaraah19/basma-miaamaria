@@ -38,7 +38,7 @@ export const getProjects = async (req, res) => {
       include: { images: { orderBy: { order: "asc" } } },
     });
     res.json(projects);
-  } catch {
+  } catch (err){
     console.error("getProjects error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }

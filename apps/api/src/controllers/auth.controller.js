@@ -41,7 +41,7 @@ export const login = async (req, res) => {
     res.cookie(AUTH_COOKIE_NAME, token, cookieOptions());
     // No token in the response body — the cookie is the only place it lives.
     res.json({ success: true, user: { email: user.email } });
-  } catch {
+  } catch(err) {
     console.error("login error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }

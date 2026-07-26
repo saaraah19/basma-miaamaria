@@ -7,12 +7,10 @@ import "./HeroSection.css";
 
 export default async function HeroSection() {
 const callId = Math.random().toString(36).slice(2, 8);
-  console.log(`[HeroSection ${callId}] fetching...`);
   const content = await getSection("hero").catch((err) => {
     console.error(`[HeroSection ${callId}] fetch failed:`, err.message);
     return {};
   });
-  console.log(`[HeroSection ${callId}] subtitle:`, JSON.stringify(content?.subtitle?.value));
   
   const title = content?.title?.value ?? "Basma Miamaria";
   const subtitle = content?.subtitle?.value ?? "Architecture et décoration intérieure";
