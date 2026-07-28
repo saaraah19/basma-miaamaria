@@ -120,7 +120,10 @@ export const updateProject = async (req, res) => {
 export const setProjectImageCover = async (req, res) => {
   try {
     const { imageId } = req.params;
-    const image = await prisma.projectImage.findUnique({ where: { id: imageId } });
+    const image = await prisma.projectImage.findUnique({
+      where: { id: imageId },
+      include: { project: { select: { slug: true } } },
+    });
     if (!image) return res.status(404).json({ error: "Image introuvable." });
 
     await prisma.$transaction([
@@ -134,6 +137,8 @@ export const setProjectImageCover = async (req, res) => {
       }),
     ]);
 
+    revalidateTag("projects");
+    revalidateTag(`project:${image.project.slug}`);
     res.json({ message: "Cover mise à jour." });
   } catch(err) {
     console.error("setProjectImageCover error:", err);
@@ -161,6 +166,13 @@ export const reorderProjectImages = async (req, res) => {
         prisma.projectImage.update({ where: { id: u.id }, data: { order: u.order } })
       )
     );
+
+    const project = await prisma.project.findUnique({
+      where: { id: req.params.id },
+      select: { slug: true },
+    });
+    revalidateTag("projects");
+    if (project) revalidateTag(`project:${project.slug}`);
     res.json({ message: "Ordre mis à jour." });
   } catch (err){
     console.error("reorderProjectImages error:", err);
@@ -212,6 +224,8 @@ export const addProjectImages = async (req, res) => {
       )
     );
 
+    revalidateTag("projects");
+    revalidateTag(`project:${project.slug}`);
     res.status(201).json(images);
   } catch (err){
     console.error("addProjectImages error:", err);
@@ -222,11 +236,17 @@ export const addProjectImages = async (req, res) => {
 // DELETE /api/projects/images/:imageId — protected
 export const deleteProjectImage = async (req, res) => {
   try {
-    const image = await prisma.projectImage.findUnique({ where: { id: req.params.imageId } });
+    const image = await prisma.projectImage.findUnique({
+      where: { id: req.params.imageId },
+      include: { project: { select: { slug: true } } },
+    });
     if (!image) return res.status(404).json({ error: "Image introuvable." });
 
     await cloudinary.uploader.destroy(image.publicId);
     await prisma.projectImage.delete({ where: { id: image.id } });
+
+    revalidateTag("projects");
+    revalidateTag(`project:${image.project.slug}`);
     res.json({ message: "Image supprimée." });
   } catch (err) {
     res.status(500).json({ error: "Erreur serveur." });
@@ -239,7 +259,10 @@ export const updateProjectImageAlt = async (req, res) => {
     const image = await prisma.projectImage.update({
       where: { id: req.params.imageId },
       data: { alt: alt || null },
+      include: { project: { select: { slug: true } } },
     });
+    revalidateTag("projects");
+    revalidateTag(`project:${image.project.slug}`);
     res.json(image);
   } catch (err) {
     console.error("updateProjectImageAlt error:", err);
