@@ -1,6 +1,7 @@
 import { buildSlug } from "@bsma/shared";
 import prisma from "../lib/prisma.js";
 import { cloudinary } from "../lib/cloudinary.js";
+import { revalidateTag } from "../lib/revalidate.js";
 // A route param that could be either a cuid (id) or a slug — try slug first
 // since that's what real URLs use; id lookup keeps any old links alive.
 // `requireVisible` is true for the public route (a masked project must
@@ -82,6 +83,7 @@ export const createProject = async (req, res) => {
     const project = await prisma.project.create({
       data: { title, slug, category, description, surface, duration, budget, order: order ?? 0 },
     });
+    revalidateTag("projects");
     res.status(201).json(project);
   } catch (err) {
     if (err.status === 400) return res.status(400).json({ error: err.message });
@@ -104,6 +106,8 @@ export const updateProject = async (req, res) => {
       where: { id: req.params.id },
       data: req.body,
     });
+    revalidateTag("projects");
+    revalidateTag(`project:${project.slug}`);
     res.json(project);
   } catch (err) {
     if (err.status === 400) return res.status(400).json({ error: err.message });
@@ -171,7 +175,8 @@ export const deleteProject = async (req, res) => {
       where: { projectId: req.params.id },
     });
     await Promise.all(images.map((img) => cloudinary.uploader.destroy(img.publicId)));
-    await prisma.project.delete({ where: { id: req.params.id } });
+       await prisma.project.delete({ where: { id: req.params.id } });
+    revalidateTag("projects");
     res.json({ message: "Projet supprimé." });
   } catch (err){
     console.error("deleteProject error:", err);

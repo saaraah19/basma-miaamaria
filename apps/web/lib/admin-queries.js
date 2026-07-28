@@ -13,17 +13,7 @@ export function useProjectsQuery() {
   });
 }
 
-async function triggerRevalidate(tag) {
-  try {
-    await fetch("/api/revalidate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tag, secret: process.env.NEXT_PUBLIC_REVALIDATE_SECRET }),
-    });
-  } catch {
-    // Best-effort — worst case the page just waits out the 60s window.
-  }
-}
+
 
 
 // Single-project fetch, used when a row is expanded to manage its images.
@@ -198,7 +188,6 @@ export function useUpdateContentBlock(section) {
       api.put(`/content/${section}/${key}`, { value, styles }).then((r) => r.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "content", section] });
-      triggerRevalidate(`content:${section}`);
     },
   });
 }

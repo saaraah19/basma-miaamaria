@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma.js";
-
+import { revalidateTag } from "../lib/revalidate.js";
 // GET /api/services — public
 export const getServices = async (req, res) => {
   try {
@@ -18,13 +18,13 @@ export const createService = async (req, res) => {
     const service = await prisma.service.create({
       data: { icon, title, description, order: order ?? 0 },
     });
+    revalidateTag("services");
     res.status(201).json(service);
   } catch(err) {
 console.error("createService error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };
-
 // PUT /api/services/:id — protected, body already validated (partial)
 export const updateService = async (req, res) => {
   try {
@@ -35,6 +35,7 @@ export const updateService = async (req, res) => {
       where: { id: req.params.id },
       data: req.body,
     });
+    revalidateTag("services");
     res.json(service);
  } catch (err) {
     console.error("updateService error:", err);    res.status(500).json({ error: "Erreur serveur." });
@@ -48,6 +49,7 @@ export const deleteService = async (req, res) => {
     if (!existing) return res.status(404).json({ error: "Service introuvable." });
 
     await prisma.service.delete({ where: { id: req.params.id } });
+    revalidateTag("services");
     res.json({ message: "Service supprimé." });
   } catch (err) {
   console.error("deleteService error:", err);    res.status(500).json({ error: "Erreur serveur." });
@@ -66,6 +68,7 @@ export const reorderServices = async (req, res) => {
     await prisma.$transaction(
       updates.map((u) => prisma.service.update({ where: { id: u.id }, data: { order: u.order } }))
     );
+    revalidateTag("services");
     res.json({ message: "Ordre mis à jour." });
  } catch (err) {
  console.error("reorderServices error:", err);    res.status(500).json({ error: "Erreur serveur." });

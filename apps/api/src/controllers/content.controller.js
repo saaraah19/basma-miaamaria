@@ -1,3 +1,4 @@
+// after
 import DOMPurify from "isomorphic-dompurify";
 import {
   isKnownContentKey,
@@ -7,6 +8,7 @@ import {
   expertiseListSchema,
 } from "@bsma/shared";
 import prisma from "../lib/prisma.js";
+import { revalidateTag } from "../lib/revalidate.js";
 
 // Deliberately no "style" in ALLOWED_ATTR — free-form inline CSS from a
 // rich-text editor is a real vector (background:url() exfiltration,
@@ -101,6 +103,8 @@ export const updateContent = async (req, res) => {
       update: { value, styles },
       create: { section, key, value, styles },
     });
+
+    revalidateTag(`content:${section}`); // fire-and-forget, doesn't block the response
 
     res.json(content);
   } catch (err){
