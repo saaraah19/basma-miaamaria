@@ -29,16 +29,18 @@ export default async function ContactPage() {
     <div className="contact-page">
       <section className="contact-hero">
         <div className="contact-hero-content">
-          <h1
-            className="contact-title"
-            style={toInlineStyle(content?.hero_title?.styles)}
-            dangerouslySetInnerHTML={{ __html: sanitize(heroTitle) }}
-          />
-          <p
-            className="contact-subtitle"
-            style={toInlineStyle(content?.hero_subtitle?.styles)}
-            dangerouslySetInnerHTML={{ __html: sanitize(heroSub) }}
-          />
+          <div
+  role="heading"
+  aria-level={1}
+  className="contact-title"
+  style={toInlineStyle(content?.hero_title?.styles)}
+  dangerouslySetInnerHTML={{ __html: sanitize(heroTitle) }}
+/>
+<div
+  className="contact-subtitle"
+  style={toInlineStyle(content?.hero_subtitle?.styles)}
+  dangerouslySetInnerHTML={{ __html: sanitize(heroSub) }}
+/>
         </div>
       </section>
 

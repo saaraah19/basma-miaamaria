@@ -13,8 +13,7 @@ export default async function ServicesSection() {
 
   return (
     <section className="services-section">
-      <h2 className="services-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
-
+<div role="heading" aria-level={2} className="services-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
       <div className="services-cards">
         {services.map((service) => {
           const IconComponent = Icons[service.icon] || Icons.FaBuilding;

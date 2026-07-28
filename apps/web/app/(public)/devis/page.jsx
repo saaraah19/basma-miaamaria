@@ -22,16 +22,18 @@ export default async function DevisPage() {
 
   return (
     <section className="devis-section">
-      <h1
-        className="devis-title"
-        style={toInlineStyle(content?.title?.styles)}
-        dangerouslySetInnerHTML={{ __html: sanitize(title) }}
-      />
-      <p
-        className="devis-subtitle"
-        style={toInlineStyle(content?.subtitle?.styles)}
-        dangerouslySetInnerHTML={{ __html: sanitize(subtitle) }}
-      />
+     <div
+  role="heading"
+  aria-level={1}
+  className="devis-title"
+  style={toInlineStyle(content?.title?.styles)}
+  dangerouslySetInnerHTML={{ __html: sanitize(title) }}
+/>
+<div
+  className="devis-subtitle"
+  style={toInlineStyle(content?.subtitle?.styles)}
+  dangerouslySetInnerHTML={{ __html: sanitize(subtitle) }}
+/>
 
       <DevisForm submitLabel={submitBtn} />
     </section>

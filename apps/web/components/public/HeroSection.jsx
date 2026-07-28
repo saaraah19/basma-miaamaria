@@ -31,11 +31,13 @@ const callId = Math.random().toString(36).slice(2, 8);
       )}
 
       <div className="hero-content">
-        <h1
-          className="hero-title"
-          style={toInlineStyle(content?.title?.styles)}
-          dangerouslySetInnerHTML={{ __html: sanitize(title) }}
-        />
+        <div
+  role="heading"
+  aria-level={1}
+  className="hero-title"
+  style={toInlineStyle(content?.title?.styles)}
+  dangerouslySetInnerHTML={{ __html: sanitize(title) }}
+/>
             <div
         className="hero-subtitle"
         style={toInlineStyle(content?.subtitle?.styles)}

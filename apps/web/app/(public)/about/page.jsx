@@ -57,12 +57,14 @@ export default async function AboutPage() {
     <div className="about-page">
       <section className="about-hero">
         <div className="about-hero-content">
-          <h1
+       <div
+            role="heading"
+            aria-level={1}
             className="about-title"
             style={toInlineStyle(about.title?.styles)}
             dangerouslySetInnerHTML={{ __html: sanitize(title) }}
           />
-          <p
+         <div
             className="about-subtitle"
             style={toInlineStyle(about.subtitle?.styles)}
             dangerouslySetInnerHTML={{ __html: sanitize(subtitle) }}
@@ -73,7 +75,9 @@ export default async function AboutPage() {
       <section className="about-content">
         <div className="about-grid">
           <div className="about-section">
-            <h2
+             <div
+              role="heading"
+              aria-level={2}
               className="section-title"
               dangerouslySetInnerHTML={{ __html: sanitize(histoireTitle) }}
             />
@@ -83,7 +87,9 @@ export default async function AboutPage() {
           </div>
 
           <div className="about-section">
-            <h2
+            <div
+              role="heading"
+              aria-level={2}
               className="section-title"
               dangerouslySetInnerHTML={{ __html: sanitize(valeursTitle) }}
             />
@@ -99,7 +105,9 @@ export default async function AboutPage() {
           </div>
 
           <div className="about-section">
-            <h2
+            <div
+              role="heading"
+              aria-level={2}
               className="section-title"
               dangerouslySetInnerHTML={{ __html: sanitize(expertiseTitle) }}
             />
@@ -117,7 +125,7 @@ export default async function AboutPage() {
       </section>
 
       <section className="about-cta">
-        <h2 dangerouslySetInnerHTML={{ __html: sanitize(ctaTitle) }} />
+        <div role="heading" aria-level={2} dangerouslySetInnerHTML={{ __html: sanitize(ctaTitle) }} />
         <a href="/devis" className="cta-button">
           {ctaButton}
         </a>

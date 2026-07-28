@@ -15,8 +15,7 @@ export default async function ProjectsSection() {
 
   return (
     <section className="projects-section">
-      <h2 className="projects-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
-
+<div role="heading" aria-level={2} className="projects-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
       <div className="projects-grid">
         {displayed.map((project, index) => (
           <ProjectCard key={project.id} project={project} priority={index === 0} />

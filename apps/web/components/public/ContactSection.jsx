@@ -20,8 +20,8 @@ export default async function ContactSection() {
 
   return (
     <section className="contact-section">
-      <h2 className="contact-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
-      <p className="contact-subtitle" dangerouslySetInnerHTML={{ __html: sanitize(subtitle) }} />
+      <div role="heading" aria-level={2} className="contact-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
+      <div className="contact-subtitle" dangerouslySetInnerHTML={{ __html: sanitize(subtitle) }} />
 
       <div className="contact-container">
         {mapsUrl && (

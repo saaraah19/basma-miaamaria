@@ -38,11 +38,11 @@ export default async function Footer() {
             className="footer-logo-image"
           />
           <h3 className="footer-logo">Basma Miamaria</h3>
-          <p className="footer-tagline" dangerouslySetInnerHTML={{ __html: sanitize(tagline) }} />
-          <p
-            className="footer-description"
-            dangerouslySetInnerHTML={{ __html: sanitize(description) }}
-          />
+         <div className="footer-tagline" dangerouslySetInnerHTML={{ __html: sanitize(tagline) }} />
+<div
+  className="footer-description"
+  dangerouslySetInnerHTML={{ __html: sanitize(description) }}
+/>
         </div>
 
         <div className="footer-section">
