@@ -8,11 +8,16 @@ const COOKIE_MAX_AGE_MS = 2 * 60 * 60 * 1000; // 2h — matches JWT_EXPIRES_IN d
 const cookieOptions = () => ({
   httpOnly: true,
   secure: process.env.COOKIE_SECURE === "true",
-  sameSite: "strict",
+  // "strict" bloque le cookie sur toute requête cross-site — et sur Render,
+  // onrender.com est dans la Public Suffix List, donc deux services sur
+  // des sous-domaines onrender.com différents sont vus par le navigateur
+  // comme deux sites distincts (confirmé par sec-fetch-site: cross-site).
+  // "none" est nécessaire pour que le cookie soit envoyé entre les deux ;
+  // ça exige `secure: true`, déjà actif via COOKIE_SECURE en production.
+  sameSite: process.env.COOKIE_SECURE === "true" ? "none" : "lax",
   maxAge: COOKIE_MAX_AGE_MS,
   path: "/",
 });
-
 // POST /api/auth/login
 // Body is already validated by the `validate(loginSchema)` middleware.
 export const login = async (req, res) => {
