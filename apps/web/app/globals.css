@@ -21,6 +21,7 @@
   --color-error-bg: #fdf2f2;
   --color-error-border: #f5c6c6;
   --color-error-text: #c0392b;
+  --color-icon-bg: #fdf6ec;
 
   --radius: 10px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -38,6 +39,7 @@
   --color-error-bg: rgba(220, 38, 38, 0.15);
   --color-error-border: rgba(220, 38, 38, 0.35);
   --color-error-text: #f5a3a3;
+  --color-icon-bg: rgba(165, 135, 75, 0.15);
 }
 
 /* Admin dashboard surface — same brand accents, cooler/quieter neutrals
@@ -101,3 +103,5 @@ a {
   outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
 }
+
+

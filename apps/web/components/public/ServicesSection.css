@@ -56,7 +56,7 @@
   width: 42px;
   height: 42px;
   border-radius: 8px;
-  background: #fdf6ec;
+  background: var(--color-icon-bg);
   display: flex;
   align-items: center;
   justify-content: center;
