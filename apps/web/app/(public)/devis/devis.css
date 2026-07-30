@@ -25,9 +25,9 @@
 }
 
 .devis-success {
-  background: #f0f7f2;
-  color: var(--color-primary);
-  border: 1px solid #c8dece;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-success-border);
   border-radius: 10px;
   padding: 0.85rem 1.2rem;
   font-size: 0.875rem;
@@ -36,9 +36,9 @@
 }
 
 .devis-error {
-  background: #fdf2f2;
-  color: #c0392b;
-  border: 1px solid #f5c6c6;
+  background: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
   border-radius: 10px;
   padding: 0.85rem 1.2rem;
   font-size: 0.875rem;

@@ -13,6 +13,15 @@
   --color-muted: #888888;
   --color-border: #e5e5e5;
 
+  /* Form feedback banners (success/error) — theme-aware so they stay
+     legible instead of showing a bright light-mode block on a dark page. */
+  --color-success-bg: #f0f7f2;
+  --color-success-border: #c8dece;
+  --color-success-text: var(--color-primary);
+  --color-error-bg: #fdf2f2;
+  --color-error-border: #f5c6c6;
+  --color-error-text: #c0392b;
+
   --radius: 10px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -23,6 +32,12 @@
   --color-text: #e0e0e0;
   --color-muted: #bbbbbb;
   --color-border: #333333;
+  --color-success-bg: rgba(110, 146, 120, 0.15);
+  --color-success-border: rgba(110, 146, 120, 0.35);
+  --color-success-text: #a8d4b3;
+  --color-error-bg: rgba(220, 38, 38, 0.15);
+  --color-error-border: rgba(220, 38, 38, 0.35);
+  --color-error-text: #f5a3a3;
 }
 
 /* Admin dashboard surface — same brand accents, cooler/quieter neutrals
