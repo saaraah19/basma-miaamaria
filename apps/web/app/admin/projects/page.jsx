@@ -19,6 +19,12 @@ function ProjectManagerContent() {
   const [toDelete, setToDelete] = useState(null);
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
+  const [saved, setSaved] = useState("");
+
+  const flashSaved = (label) => {
+    setSaved(label);
+    setTimeout(() => setSaved(""), 2000);
+  };
 
   const { data: projects = [], isLoading } = useProjectsQuery();
   const filteredProjects = projects.filter(
@@ -30,20 +36,22 @@ function ProjectManagerContent() {
   const deleteProject = useDeleteProject();
   const updateProject = useUpdateProject();
 
-  const handleDelete = async () => {
+ const handleDelete = async () => {
     await deleteProject.mutateAsync(toDelete.id);
     if (selected === toDelete.id) setSelected(null);
     setToDelete(null);
+    flashSaved("✓ Projet supprimé");
   };
 
   return (
     <>
-      <div className="projects-header">
+        <div className="projects-header">
         <div>
           <span className="projects-header-label">Gestion des projets</span>
           <span className="projects-header-count">
             {projects.length} projet{projects.length !== 1 ? "s" : ""}
           </span>
+          {saved && <span className="save-indicator" style={{ marginLeft: "0.75rem" }}>{saved}</span>}
         </div>
         <button className="btn-primary" onClick={() => { setEditProject(null); setShowForm(true); }}>
           + Nouveau projet
@@ -98,7 +106,14 @@ function ProjectManagerContent() {
       </div>
 
       {showForm && (
-        <ProjectForm project={editProject} onClose={() => { setShowForm(false); setEditProject(null); }} />
+        <ProjectForm
+          project={editProject}
+          onClose={(message) => {
+            setShowForm(false);
+            setEditProject(null);
+            if (message) flashSaved(message);
+          }}
+        />
       )}
 
       {toDelete && (

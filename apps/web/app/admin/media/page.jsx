@@ -19,6 +19,12 @@ function MediaManagerContent() {
   const [toDelete, setToDelete] = useState(null);
   const [copiedUrl, setCopiedUrl] = useState(null);
   const [uploadError, setUploadError] = useState("");
+  const [saved, setSaved] = useState("");
+
+  const flashSaved = (label) => {
+    setSaved(label);
+    setTimeout(() => setSaved(""), 2000);
+  };
 
   const handleFile = (file) => {
     if (!file) return;
@@ -34,6 +40,7 @@ function MediaManagerContent() {
     }
 
     upload.mutate(file, {
+      onSuccess: () => flashSaved("✓ Fichier ajouté"),
       onError: (err) => setUploadError(err.response?.data?.error ?? "Erreur lors de l'upload."),
     });
   };
@@ -48,6 +55,7 @@ function MediaManagerContent() {
     <>
       <div className="admin-card">
         <h2 className="media-section-title">Uploader un fichier</h2>
+        {saved && <span className="save-indicator" style={{ display: "block", marginBottom: "0.5rem" }}>{saved}</span>}
         <label className="media-upload-label">
           <input
             ref={inputRef}
@@ -101,11 +109,14 @@ function MediaManagerContent() {
         )}
       </div>
 
-      {toDelete && (
+  {toDelete && (
         <ConfirmModal
           title="Supprimer ce fichier ?"
           message={`"${toDelete.filename}" sera supprimé définitivement.`}
-          onConfirm={() => { remove.mutate(toDelete.id); setToDelete(null); }}
+          onConfirm={() => {
+            remove.mutate(toDelete.id, { onSuccess: () => flashSaved("✓ Fichier supprimé") });
+            setToDelete(null);
+          }}
           onCancel={() => setToDelete(null)}
         />
       )}

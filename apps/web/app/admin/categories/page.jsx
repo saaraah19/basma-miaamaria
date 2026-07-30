@@ -12,6 +12,12 @@ function CategoriesContent() {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [toDelete, setToDelete] = useState(null);
+  const [saved, setSaved] = useState("");
+
+  const flashSaved = (label) => {
+    setSaved(label);
+    setTimeout(() => setSaved(""), 2000);
+  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -19,6 +25,7 @@ function CategoriesContent() {
     try {
       await create.mutateAsync({ name: name.trim() });
       setName("");
+      flashSaved("✓ Catégorie ajoutée");
     } catch (err) {
       setError(err.response?.data?.error ?? "Erreur lors de la création.");
     }
@@ -28,6 +35,7 @@ function CategoriesContent() {
     try {
       await remove.mutateAsync(toDelete.id);
       setToDelete(null);
+      flashSaved("✓ Catégorie supprimée");
     } catch (err) {
       setError(err.response?.data?.error ?? "Erreur lors de la suppression.");
       setToDelete(null);
@@ -39,7 +47,7 @@ function CategoriesContent() {
       <div className="admin-card">
         <span className="section-label">Nouvelle catégorie</span>
         {error && <div className="text-block-error">{error}</div>}
-        <form className="categories-add-form" onSubmit={handleAdd}>
+   <form className="categories-add-form" onSubmit={handleAdd}>
           <input
             className="admin-input"
             value={name}
@@ -52,6 +60,7 @@ function CategoriesContent() {
             {create.isPending ? "Ajout..." : "+ Ajouter"}
           </button>
         </form>
+        {saved && <span className="save-indicator" style={{ display: "block", marginTop: "0.6rem" }}>{saved}</span>}
       </div>
 
       <div className="admin-card">

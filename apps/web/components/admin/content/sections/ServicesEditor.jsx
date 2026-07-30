@@ -17,8 +17,14 @@ export default function ServicesEditor() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [showNew, setShowNew] = useState(false);
   const [error, setError] = useState("");
+  const [saved, setSaved] = useState("");
 
   if (isLoading) return <p className="section-loading">Chargement…</p>;
+
+  const flashSaved = (label) => {
+    setSaved(label);
+    setTimeout(() => setSaved(""), 2000);
+  };
 
   const validateAndSubmit = async (mutation, extra = {}) => {
     setError("");
@@ -32,6 +38,7 @@ export default function ServicesEditor() {
       setShowNew(false);
       setEditId(null);
       setForm(EMPTY_FORM);
+      flashSaved(extra.id ? "✓ Service modifié" : "✓ Service ajouté");
     } catch (err) {
       setError(err.response?.data?.error ?? "Erreur lors de l'enregistrement.");
     }
@@ -46,7 +53,8 @@ export default function ServicesEditor() {
         <button className="btn-primary" onClick={() => { setShowNew(true); setForm(EMPTY_FORM); }}>+ Ajouter</button>
       </div>
 
-      {error && <div className="text-block-error">{error}</div>}
+           {error && <div className="text-block-error">{error}</div>}
+      {saved && <span className="save-indicator">{saved}</span>}
 
       {showNew && (
         <div style={{ ...rowStyle, background: "var(--color-bg)", marginBottom: "1rem" }}>
@@ -102,7 +110,11 @@ export default function ServicesEditor() {
                   style={{ fontSize: "0.775rem", padding: "0.4rem 0.75rem" }}
                   onClick={() => { setEditId(s.id); setForm({ icon: s.icon, title: s.title, description: s.description }); setError(""); }}
                 >✏️</button>
-                <button className="btn-danger" style={{ padding: "0.4rem 0.65rem" }} onClick={() => remove.mutate(s.id)}>🗑</button>
+  <button
+                  className="btn-danger"
+                  style={{ padding: "0.4rem 0.65rem" }}
+                  onClick={() => remove.mutate(s.id, { onSuccess: () => flashSaved("✓ Service supprimé") })}
+                >🗑</button>
               </div>
             </div>
           )}

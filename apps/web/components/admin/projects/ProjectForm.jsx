@@ -66,7 +66,7 @@ export default function ProjectForm({ project = null, onClose }) {
       } else {
         await createProject.mutateAsync(result.data);
       }
-      onClose();
+      onClose(isEdit ? "✓ Projet modifié" : "✓ Projet créé");
     } catch (err) {
       setFieldErrors({ _root: err.response?.data?.error ?? "Erreur lors de l'enregistrement." });
     }
