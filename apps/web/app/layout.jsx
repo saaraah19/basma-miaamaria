@@ -32,8 +32,10 @@ export const metadata = {
     locale: "fr_DZ",
     siteName: "Basma Miamaria",
   },
+  verification: {
+    google: "5HHHTnb8RifasRShV6Nib29xKcaj3J4xtH6SY7y5H64",
+  },
 };
-
 // Structured data for local search — see the SEO audit. Kept as static
 // data here since business info (address/hours/phone) changes rarely;
 // if that ever needs to be admin-editable, swap this for a server fetch
