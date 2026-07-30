@@ -1,63 +1,61 @@
-# BSMA — Plateforme Portfolio & Administration
+# BASMA MIAAMARIA — Portfolio & Admin Platform
 
-Site web professionnel pour **Basma Miamaria**, cabinet d'architecture et de
-décoration intérieure basé à Oran, Algérie. La plateforme combine un site
-vitrine public et un panneau d'administration permettant une gestion
-autonome du contenu, des projets et des demandes clients.
+Professional website for **Basma Miamaria**, an architecture and interior
+design studio based in Oran, Algeria. The platform combines a public
+showcase site with an admin panel enabling independent management of
+content, projects, and client requests.
 
-## À propos
+## About
 
-Le site présente les projets, services et l'identité du cabinet, tout en
-offrant une interface d'administration complète permettant de modifier
-textes, couleurs, polices, catégories de projets et galeries d'images sans
-intervention technique.
+The site presents the studio's projects, services, and identity, while
+offering a full admin interface to edit text, colors, fonts, project
+categories, and image galleries without any technical intervention.
 
-## Stack technique
+## Tech stack
 
-Le projet est organisé en monorepo (npm workspaces) :
+The project is organized as a monorepo (npm workspaces):
 
 ```
-apps/api/       API REST — Express, Prisma, PostgreSQL
-apps/web/       Application web — Next.js (App Router)
-packages/shared Schémas de validation partagés (Zod)
+apps/api/       REST API — Express, Prisma, PostgreSQL
+apps/web/       Web application — Next.js (App Router)
+packages/shared Shared validation schemas (Zod)
 ```
 
 **Frontend**
-- Next.js (App Router) — rendu serveur pour le site public, interface
-  client pour l'administration
-- Tailwind CSS pour le style
-- Tiptap comme éditeur de texte enrichi
-- React Query pour la gestion des données côté admin
-- dnd-kit pour le réordonnancement par glisser-déposer
+- Next.js (App Router) — server-rendered public site, client-rendered
+  admin interface
+- Tailwind CSS for styling
+- Tiptap as the rich-text editor
+- React Query for admin-side data fetching
+- dnd-kit for drag-and-drop reordering
 
 **Backend**
 - Express.js
-- Prisma ORM avec PostgreSQL
-- Validation partagée via Zod (mêmes schémas côté client et serveur)
+- Prisma ORM with PostgreSQL
+- Shared validation via Zod (same schemas on both client and server)
 
-**Services externes**
-- Cloudinary — hébergement et optimisation des images
-- Resend — envoi d'emails transactionnels (formulaires de contact et devis)
+**External services**
+- Cloudinary — image hosting and optimization
+- Resend — transactional email delivery (contact and quote request forms)
 
-## Fonctionnalités principales
+## Key features
 
-- Site vitrine avec pages Accueil, À propos, Projets, Contact, Devis
-- Portfolio de projets avec catégories dynamiques, galerie d'images et
-  filtres publics
-- Formulaires de contact et de demande de devis avec notifications par
-  email
-- Panneau d'administration pour la gestion du contenu textuel, des
-  couleurs, des projets, des services, des médias et des messages reçus
-- Optimisation des images (Cloudinary) et mise en cache incrémentale (ISR)
-  avec revalidation automatique après chaque modification
-- Design responsive avec thème clair/sombre
+- Public site with Home, About, Projects, Contact, and Quote Request pages
+- Project portfolio with dynamic categories, image galleries, and public
+  filters
+- Contact and quote request forms with email notifications
+- Admin panel for managing text content, colors, projects, services,
+  media, and incoming messages
+- Image optimization (Cloudinary) and incremental static caching (ISR)
+  with automatic revalidation after each update
+- Responsive design with light/dark theme
 
-## Prérequis
+## Requirements
 
-- Node.js 20 ou supérieur
-- Une base de données PostgreSQL
-- Un compte Cloudinary (hébergement d'images)
-- Un compte Resend (envoi d'emails)
+- Node.js 20 or higher
+- A PostgreSQL database
+- A Cloudinary account (image hosting)
+- A Resend account (email delivery)
 
 ## Installation
 
@@ -65,11 +63,10 @@ packages/shared Schémas de validation partagés (Zod)
 npm install
 ```
 
-Chaque application (`apps/api`, `apps/web`) nécessite son propre fichier de
-configuration d'environnement, basé sur les fichiers `.env.example` fournis
-dans chaque dossier. Les valeurs de connexion à la base de données, les
-clés de services externes et les paramètres du site doivent y être
-renseignés avant le démarrage.
+Each application (`apps/api`, `apps/web`) requires its own environment
+configuration file, based on the `.env.example` files provided in each
+folder. Database connection values, third-party service keys, and site
+settings must be filled in before startup.
 
 ```bash
 npm run db:migrate
@@ -79,20 +76,19 @@ npm run dev:api
 npm run dev:web
 ```
 
-## Déploiement
+## Deployment
 
-Le projet est conteneurisé (Docker) pour les deux applications, ce qui
-permet un déploiement sur tout hébergeur supportant des conteneurs Docker.
-La configuration de production nécessite des valeurs d'environnement
-propres à l'hébergement choisi (URL du site, connexion à la base de
-données, clés de services tiers).
+The project is containerized (Docker) for both applications, enabling
+deployment on any hosting provider that supports Docker containers.
+Production configuration requires environment values specific to the
+chosen host (site URL, database connection, third-party service keys).
 
-## Structure de la validation
+## Validation structure
 
-L'ensemble des règles de validation (formulaires, contenu éditable,
-projets, services) est centralisé dans `packages/shared`, garantissant une
-cohérence stricte entre ce que l'interface accepte et ce que l'API valide.
+All validation rules (forms, editable content, projects, services) are
+centralized in `packages/shared`, ensuring strict consistency between
+what the interface accepts and what the API validates.
 
 ---
 
-*Projet développé sur mesure pour Basma Miamaria.*
+*Project custom-built for Basma Miamaria.*
