@@ -1,5 +1,6 @@
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -87,6 +88,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>{children}</body>
+      {process.env.NEXT_PUBLIC_GA_ID && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      )}
     </html>
   );
 }
