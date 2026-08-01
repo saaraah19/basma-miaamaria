@@ -73,8 +73,8 @@ export default function ProjectForm({ project = null, onClose }) {
   };
 
   return (
-    <div className="project-form-overlay" onClick={onClose}>
-      <div className="project-form-box" onClick={(e) => e.stopPropagation()}>
+    <div className="project-form-overlay" onClick={() => onClose()}>
+         <div className="project-form-box" onClick={(e) => e.stopPropagation()}>
         <h2>{isEdit ? "Modifier le projet" : "Nouveau projet"}</h2>
 
         {fieldErrors._root && <div className="form-error-banner">{fieldErrors._root}</div>}
@@ -136,8 +136,8 @@ export default function ProjectForm({ project = null, onClose }) {
             <input className="admin-input" value={form.budget} onChange={(e) => set("budget", e.target.value)} placeholder="Ex: sur demande" />
           </div>
 
-          <div className="project-form-actions">
-            <button type="button" className="btn-secondary" onClick={onClose}>Annuler</button>
+           <div className="project-form-actions">
+            <button type="button" className="btn-secondary" onClick={() => onClose()}>Annuler</button>
             <button type="submit" className="btn-success" disabled={isPending}>
               {isPending ? "Sauvegarde..." : isEdit ? "Modifier" : "Créer"}
             </button>
