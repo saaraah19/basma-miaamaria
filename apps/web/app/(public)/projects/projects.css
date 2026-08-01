@@ -13,6 +13,47 @@
   margin-bottom: 2rem;
 }
 
+.projects-search {
+  position: relative;
+  max-width: 420px;
+  margin: 0 auto 1.5rem;
+}
+
+.projects-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 2.5rem 0.75rem 1.1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 25px;
+  font-size: 0.95rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.projects-search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(110, 146, 120, 0.1);
+}
+
+.projects-search-clear {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.projects-search-clear:hover {
+  color: var(--color-text);
+}
+
 .projects-filters {
   margin-bottom: 3rem;
   display: flex;
