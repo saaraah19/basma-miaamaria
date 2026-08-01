@@ -14,12 +14,18 @@ model User {
 }
 
 model Content {
-  id        String   @id @default(cuid())
-  section   String
-  key       String
-  value     String
-  styles    Json?
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  section     String
+  key         String
+  value       String   @default("")
+  styles      Json?
+  // Draft fields: kept fully separate from the published value/styles so
+  // editing a draft never affects what visitors see until "Publier" is
+  // clicked. hasDraft is the source of truth for whether one is pending.
+  draftValue  String?
+  draftStyles Json?
+  hasDraft    Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
 
   @@unique([section, key])
 }

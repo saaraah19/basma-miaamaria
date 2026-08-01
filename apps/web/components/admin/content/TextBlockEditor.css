@@ -123,3 +123,15 @@
   color: #b45309;
   font-weight: 500;
 }
+
+.text-block-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.draft-indicator {
+  font-size: 0.775rem;
+  color: var(--color-secondary);
+  font-weight: 500;
+}

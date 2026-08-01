@@ -28,8 +28,8 @@ export default function ListFieldEditor({ section, blockKey, label, fields, sche
       return;
     }
 
-    mutate(
-      { key: blockKey, value: JSON.stringify(result.data) },
+     mutate(
+      { key: blockKey, value: JSON.stringify(result.data), publish: true },
       {
         onSuccess: () => {
           setSaved(true);

@@ -54,14 +54,42 @@ export const getSection = async (req, res) => {
   }
 };
 
+// new — GET /api/content/:section/admin — protected
+// Same as getSection but includes draft fields, for the admin editors
+// working on unpublished changes. Never exposed on the public route.
+export const getSectionAdmin = async (req, res) => {
+  try {
+    const { section } = req.params;
+    const content = await prisma.content.findMany({ where: { section } });
+    const result = {};
+    content.forEach((item) => {
+      result[item.key] = {
+        value: item.value,
+        styles: item.styles,
+        hasDraft: item.hasDraft,
+        draftValue: item.draftValue,
+        draftStyles: item.draftStyles,
+      };
+    });
+    res.json(result);
+  } catch (err) {
+    console.error("getSectionAdmin error:", err);
+    res.status(500).json({ error: "Erreur serveur." });
+  }
+};
+
 // PUT /api/content/:section/:key — protected
+// after
+// PUT /api/content/:section/:key — protected
+// By default this saves a DRAFT (never touches the published value/styles,
+// never revalidates the public site). Pass `publish: true` in the body to
+// save and publish atomically in one call — used by editors that never had
+// a draft workflow to begin with (hero background image, valeurs/expertise
+// lists) so their existing "save = live immediately" behavior is unchanged.
 export const updateContent = async (req, res) => {
   try {
     const { section, key } = req.params;
 
-    // Deny-by-default: only (section, key) pairs the admin UI is actually
-    // supposed to expose can ever be written, regardless of what the
-    // request body contains.
     if (!isKnownContentKey(section, key)) {
       return res.status(400).json({ error: "Champ de contenu inconnu." });
     }
@@ -73,10 +101,8 @@ export const updateContent = async (req, res) => {
 
     const blockType = getBlockType(section, key);
     let { value, styles } = parsed.data;
+    const publishNow = req.body?.publish === true;
 
-    // "valeurs" / "expertise" are JSON-encoded repeatable lists, not
-    // free-text — validate the decoded structure instead of sanitizing it
-    // as HTML (it isn't HTML).
     if (section === "about" && (key === "valeurs" || key === "expertise")) {
       let decoded;
       try {
@@ -98,17 +124,81 @@ export const updateContent = async (req, res) => {
       }
     }
 
+    const data = publishNow
+      ? { value, styles, hasDraft: false, draftValue: null, draftStyles: null }
+      : { draftValue: value, draftStyles: styles, hasDraft: true };
+
     const content = await prisma.content.upsert({
       where: { section_key: { section, key } },
-      update: { value, styles },
-      create: { section, key, value, styles },
+      update: data,
+      create: publishNow
+        ? { section, key, value, styles }
+        : { section, key, draftValue: value, draftStyles: styles, hasDraft: true },
     });
 
-    revalidateTag(`content:${section}`); // fire-and-forget, doesn't block the response
+    if (publishNow) {
+      revalidateTag(`content:${section}`);
+    }
 
     res.json(content);
   } catch (err){
        console.error("updateContent error:", err);
+    res.status(500).json({ error: "Erreur serveur." });
+  }
+};
+
+// POST /api/content/:section/:key/publish — protected
+// Copies the pending draft into the published value/styles, clears the
+// draft, and revalidates — this is the only place a draft ever becomes
+// publicly visible.
+export const publishContentBlock = async (req, res) => {
+  try {
+    const { section, key } = req.params;
+    if (!isKnownContentKey(section, key)) {
+      return res.status(400).json({ error: "Champ de contenu inconnu." });
+    }
+
+    const existing = await prisma.content.findUnique({ where: { section_key: { section, key } } });
+    if (!existing || !existing.hasDraft) {
+      return res.status(400).json({ error: "Aucun brouillon à publier." });
+    }
+
+    const content = await prisma.content.update({
+      where: { section_key: { section, key } },
+      data: {
+        value: existing.draftValue,
+        styles: existing.draftStyles,
+        hasDraft: false,
+        draftValue: null,
+        draftStyles: null,
+      },
+    });
+
+    revalidateTag(`content:${section}`);
+    res.json(content);
+  } catch (err) {
+    console.error("publishContentBlock error:", err);
+    res.status(500).json({ error: "Erreur serveur." });
+  }
+};
+
+// DELETE /api/content/:section/:key/draft — protected
+// Discards the pending draft, reverting the admin view back to the
+// currently published value. The public site was never affected either way.
+export const discardContentDraft = async (req, res) => {
+  try {
+    const { section, key } = req.params;
+    const content = await prisma.content
+      .update({
+        where: { section_key: { section, key } },
+        data: { hasDraft: false, draftValue: null, draftStyles: null },
+      })
+      .catch(() => null);
+
+    if (!content) return res.status(404).json({ error: "Introuvable." });
+    res.json(content);
+  } catch (err) {
+    console.error("discardContentDraft error:", err);
     res.status(500).json({ error: "Erreur serveur." });
   }
 };

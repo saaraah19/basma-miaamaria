@@ -177,18 +177,34 @@ export function useCategoryMutations() {
 export function useSectionQuery(section) {
   return useQuery({
     queryKey: ["admin", "content", section],
-    queryFn: () => api.get(`/content/${section}`).then((r) => r.data),
+    queryFn: () => api.get(`/content/${section}/admin`).then((r) => r.data),
   });
 }
 
 export function useUpdateContentBlock(section) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ key, value, styles }) =>
-      api.put(`/content/${section}/${key}`, { value, styles }).then((r) => r.data),
+    mutationFn: ({ key, value, styles, publish }) =>
+      api.put(`/content/${section}/${key}`, { value, styles, publish }).then((r) => r.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "content", section] });
     },
+  });
+}
+
+export function usePublishContentBlock(section) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (key) => api.post(`/content/${section}/${key}/publish`).then((r) => r.data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "content", section] }),
+  });
+}
+
+export function useDiscardContentDraft(section) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (key) => api.delete(`/content/${section}/${key}/draft`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "content", section] }),
   });
 }
 

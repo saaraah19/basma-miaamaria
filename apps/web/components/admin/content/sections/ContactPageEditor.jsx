@@ -10,16 +10,56 @@ export default function ContactPageEditor() {
   return (
     <div className="admin-card">
       <span className="section-label">Page Contact</span>
-      <TextBlockEditor section="contact_page" blockKey="hero_title" label="Titre hero" type="richText" supportsStyles initialValue={data.hero_title?.value} initialStyles={data.hero_title?.styles} />
-      <TextBlockEditor section="contact_page" blockKey="hero_subtitle" label="Sous-titre" type="richText" supportsStyles initialValue={data.hero_subtitle?.value} initialStyles={data.hero_subtitle?.styles} />
-      <TextBlockEditor section="contact_page" blockKey="address" label="Adresse" type="plainText" initialValue={data.address?.value} />
-      <TextBlockEditor section="contact_page" blockKey="phone" label="Téléphone" type="plainText" initialValue={data.phone?.value} />
-      <TextBlockEditor section="contact_page" blockKey="email" label="Email" type="plainText" initialValue={data.email?.value} />
-      <TextBlockEditor section="contact_page" blockKey="hours_1" label="Horaires 1" type="plainText" initialValue={data.hours_1?.value} />
-      <TextBlockEditor section="contact_page" blockKey="hours_2" label="Horaires 2" type="plainText" initialValue={data.hours_2?.value} />
-      <TextBlockEditor section="contact_page" blockKey="facebook" label="Facebook URL" type="url" initialValue={data.facebook?.value} />
-      <TextBlockEditor section="contact_page" blockKey="instagram" label="Instagram URL" type="url" initialValue={data.instagram?.value} />
-      <TextBlockEditor section="contact_page" blockKey="submit_btn" label="Texte bouton" type="plainText" supportsStyles initialValue={data.submit_btn?.value} initialStyles={data.submit_btn?.styles} />
+      <TextBlockEditor
+        section="contact_page" blockKey="hero_title" label="Titre hero" type="richText" supportsStyles
+        initialValue={data.hero_title?.value} initialStyles={data.hero_title?.styles}
+        hasDraft={data.hero_title?.hasDraft} draftValue={data.hero_title?.draftValue} draftStyles={data.hero_title?.draftStyles}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="hero_subtitle" label="Sous-titre" type="richText" supportsStyles
+        initialValue={data.hero_subtitle?.value} initialStyles={data.hero_subtitle?.styles}
+        hasDraft={data.hero_subtitle?.hasDraft} draftValue={data.hero_subtitle?.draftValue} draftStyles={data.hero_subtitle?.draftStyles}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="address" label="Adresse" type="plainText"
+        initialValue={data.address?.value}
+        hasDraft={data.address?.hasDraft} draftValue={data.address?.draftValue}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="phone" label="Téléphone" type="plainText"
+        initialValue={data.phone?.value}
+        hasDraft={data.phone?.hasDraft} draftValue={data.phone?.draftValue}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="email" label="Email" type="plainText"
+        initialValue={data.email?.value}
+        hasDraft={data.email?.hasDraft} draftValue={data.email?.draftValue}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="hours_1" label="Horaires 1" type="plainText"
+        initialValue={data.hours_1?.value}
+        hasDraft={data.hours_1?.hasDraft} draftValue={data.hours_1?.draftValue}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="hours_2" label="Horaires 2" type="plainText"
+        initialValue={data.hours_2?.value}
+        hasDraft={data.hours_2?.hasDraft} draftValue={data.hours_2?.draftValue}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="facebook" label="Facebook URL" type="url"
+        initialValue={data.facebook?.value}
+        hasDraft={data.facebook?.hasDraft} draftValue={data.facebook?.draftValue}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="instagram" label="Instagram URL" type="url"
+        initialValue={data.instagram?.value}
+        hasDraft={data.instagram?.hasDraft} draftValue={data.instagram?.draftValue}
+      />
+      <TextBlockEditor
+        section="contact_page" blockKey="submit_btn" label="Texte bouton" type="plainText" supportsStyles
+        initialValue={data.submit_btn?.value} initialStyles={data.submit_btn?.styles}
+        hasDraft={data.submit_btn?.hasDraft} draftValue={data.submit_btn?.draftValue} draftStyles={data.submit_btn?.draftStyles}
+      />
     </div>
   );
 }

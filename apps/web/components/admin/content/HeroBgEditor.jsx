@@ -21,7 +21,7 @@ export default function HeroBgEditor({ initialUrl }) {
 
     try {
       const media = await upload.mutateAsync(file);
-      await updateContent.mutateAsync({ key: "bg_image", value: media.url });
+      await updateContent.mutateAsync({ key: "bg_image", value: media.url, publish: true });
       setPreview(media.url);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);

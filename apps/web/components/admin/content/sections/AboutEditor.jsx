@@ -32,16 +32,40 @@ export default function AboutEditor() {
       <span className="section-label">Page À Propos</span>
 
       <h3 className="section-subheading">Hero</h3>
-      <TextBlockEditor section="about" blockKey="title" label="Titre hero" type="richText" supportsStyles initialValue={data.title?.value} initialStyles={data.title?.styles} />
-      <TextBlockEditor section="about" blockKey="subtitle" label="Sous-titre" type="richText" supportsStyles initialValue={data.subtitle?.value} initialStyles={data.subtitle?.styles} />
+      <TextBlockEditor
+        section="about" blockKey="title" label="Titre hero" type="richText" supportsStyles
+        initialValue={data.title?.value} initialStyles={data.title?.styles}
+        hasDraft={data.title?.hasDraft} draftValue={data.title?.draftValue} draftStyles={data.title?.draftStyles}
+      />
+      <TextBlockEditor
+        section="about" blockKey="subtitle" label="Sous-titre" type="richText" supportsStyles
+        initialValue={data.subtitle?.value} initialStyles={data.subtitle?.styles}
+        hasDraft={data.subtitle?.hasDraft} draftValue={data.subtitle?.draftValue} draftStyles={data.subtitle?.draftStyles}
+      />
 
       <h3 className="section-subheading">Histoire</h3>
-      <TextBlockEditor section="about" blockKey="histoire_title" label="Titre section" type="richText" initialValue={data.histoire_title?.value} />
-      <TextBlockEditor section="about" blockKey="histoire_1" label="Paragraphe 1" type="richText" initialValue={data.histoire_1?.value} />
-      <TextBlockEditor section="about" blockKey="histoire_2" label="Paragraphe 2" type="richText" initialValue={data.histoire_2?.value} />
+      <TextBlockEditor
+        section="about" blockKey="histoire_title" label="Titre section" type="richText"
+        initialValue={data.histoire_title?.value}
+        hasDraft={data.histoire_title?.hasDraft} draftValue={data.histoire_title?.draftValue}
+      />
+      <TextBlockEditor
+        section="about" blockKey="histoire_1" label="Paragraphe 1" type="richText"
+        initialValue={data.histoire_1?.value}
+        hasDraft={data.histoire_1?.hasDraft} draftValue={data.histoire_1?.draftValue}
+      />
+      <TextBlockEditor
+        section="about" blockKey="histoire_2" label="Paragraphe 2" type="richText"
+        initialValue={data.histoire_2?.value}
+        hasDraft={data.histoire_2?.hasDraft} draftValue={data.histoire_2?.draftValue}
+      />
 
       <h3 className="section-subheading">Valeurs</h3>
-      <TextBlockEditor section="about" blockKey="valeurs_title" label="Titre section" type="richText" initialValue={data.valeurs_title?.value} />
+      <TextBlockEditor
+        section="about" blockKey="valeurs_title" label="Titre section" type="richText"
+        initialValue={data.valeurs_title?.value}
+        hasDraft={data.valeurs_title?.hasDraft} draftValue={data.valeurs_title?.draftValue}
+      />
       <ListFieldEditor
         section="about"
         blockKey="valeurs"
@@ -57,7 +81,11 @@ export default function AboutEditor() {
       />
 
       <h3 className="section-subheading">Expertise</h3>
-      <TextBlockEditor section="about" blockKey="expertise_title" label="Titre section" type="richText" initialValue={data.expertise_title?.value} />
+      <TextBlockEditor
+        section="about" blockKey="expertise_title" label="Titre section" type="richText"
+        initialValue={data.expertise_title?.value}
+        hasDraft={data.expertise_title?.hasDraft} draftValue={data.expertise_title?.draftValue}
+      />
       <ListFieldEditor
         section="about"
         blockKey="expertise"
@@ -72,8 +100,16 @@ export default function AboutEditor() {
       />
 
       <h3 className="section-subheading">Appel à l&apos;action</h3>
-      <TextBlockEditor section="about" blockKey="cta_title" label="Titre CTA" type="richText" supportsStyles initialValue={data.cta_title?.value} initialStyles={data.cta_title?.styles} />
-      <TextBlockEditor section="about" blockKey="cta_button" label="Texte bouton" type="plainText" supportsStyles initialValue={data.cta_button?.value} initialStyles={data.cta_button?.styles} />
+      <TextBlockEditor
+        section="about" blockKey="cta_title" label="Titre CTA" type="richText" supportsStyles
+        initialValue={data.cta_title?.value} initialStyles={data.cta_title?.styles}
+        hasDraft={data.cta_title?.hasDraft} draftValue={data.cta_title?.draftValue} draftStyles={data.cta_title?.draftStyles}
+      />
+      <TextBlockEditor
+        section="about" blockKey="cta_button" label="Texte bouton" type="plainText" supportsStyles
+        initialValue={data.cta_button?.value} initialStyles={data.cta_button?.styles}
+        hasDraft={data.cta_button?.hasDraft} draftValue={data.cta_button?.draftValue} draftStyles={data.cta_button?.draftStyles}
+      />
     </div>
   );
 }
