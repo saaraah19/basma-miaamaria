@@ -1,12 +1,27 @@
 .content-tab-bar {
   display: flex;
-  gap: 0.2rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0.25rem;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
+}
+
+.content-tab-bar-tabs {
+  display: flex;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.content-view-link {
+  font-size: 0.775rem;
+  padding: 0.4rem 0.85rem;
+  white-space: nowrap;
+  margin-right: 0.25rem;
 }
 
 .content-tab-bar button {

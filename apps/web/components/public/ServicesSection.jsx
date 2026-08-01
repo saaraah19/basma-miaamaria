@@ -12,8 +12,8 @@ export default async function ServicesSection() {
   const title = home?.services_title?.value ?? "Nos Services";
 
   return (
-    <section className="services-section">
-<div role="heading" aria-level={2} className="services-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
+    <section id="services" className="services-section">
+      <div role="heading" aria-level={2} className="services-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
       <div className="services-cards">
         {services.map((service) => {
           const IconComponent = Icons[service.icon] || Icons.FaBuilding;

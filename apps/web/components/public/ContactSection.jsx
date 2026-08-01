@@ -19,7 +19,7 @@ export default async function ContactSection() {
   const formBtnText = content?.form_btn_text?.value ?? "Envoyer";
 
   return (
-    <section className="contact-section">
+    <section id="contact" className="contact-section">
       <div role="heading" aria-level={2} className="contact-title" dangerouslySetInnerHTML={{ __html: sanitize(title) }} />
       <div className="contact-subtitle" dangerouslySetInnerHTML={{ __html: sanitize(subtitle) }} />
 

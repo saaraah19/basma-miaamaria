@@ -48,10 +48,32 @@ export default function ServicesEditor() {
 
   return (
     <div className="admin-card">
-      <div className="services-editor-header">
-        <span className="section-label" style={{ marginBottom: 0 }}>Services ({services.length})</span>
-        <button className="btn-primary" onClick={() => { setShowNew(true); setForm(EMPTY_FORM); }}>+ Ajouter</button>
-      </div>
+     <div className="services-editor-header">
+  <span className="section-label" style={{ marginBottom: 0 }}>
+    Services ({services.length})
+  </span>
+  <div style={{ display: "flex", gap: "0.5rem" }}>
+    <a
+      className="btn-secondary"
+      style={{ fontSize: "0.775rem", padding: "0.4rem 0.75rem" }}
+      href={`${process.env.NEXT_PUBLIC_SITE_URL}/#services`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      🔗 Voir
+    </a>
+    <button
+      className="btn-primary"
+      onClick={() => {
+        setShowNew(true);
+        setForm(EMPTY_FORM);
+      }}
+    >
+      + Ajouter
+    </button>
+  </div>
+</div>
+
 
            {error && <div className="text-block-error">{error}</div>}
       {saved && <span className="save-indicator">{saved}</span>}
