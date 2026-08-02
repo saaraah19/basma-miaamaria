@@ -10,7 +10,85 @@ import { useUpdateContentBlock, usePublishContentBlock, useDiscardContentDraft }
 import StyleControls from "./StyleControls";
 import "./TextBlockEditor.css";
 
-// ... RichTextToolbar and RichTextField stay exactly as before, unchanged ...
+function RichTextToolbar({ editor }) {
+  if (!editor) return null;
+
+  const setLink = () => {
+    const previousUrl = editor.getAttributes("link").href;
+    const url = window.prompt("URL du lien :", previousUrl ?? "https://");
+    if (url === null) return;
+    if (url === "") {
+      editor.chain().focus().unsetLink().run();
+      return;
+    }
+    editor.chain().focus().setLink({ href: url }).run();
+  };
+
+  return (
+    <div className="tiptap-toolbar">
+      <button type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={editor.isActive("bold") ? "is-active" : ""}>B</button>
+      <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={editor.isActive("italic") ? "is-active" : ""}><em>I</em></button>
+      <button type="button" onClick={() => editor.chain().focus().toggleUnderline().run()} className={editor.isActive("underline") ? "is-active" : ""}><u>U</u></button>
+
+      <div className="toolbar-divider" />
+
+      <select
+        onChange={(e) => {
+          const val = e.target.value;
+          if (val === "p") editor.chain().focus().setParagraph().run();
+          else editor.chain().focus().toggleHeading({ level: parseInt(val, 10) }).run();
+        }}
+        value={
+          editor.isActive("heading", { level: 1 }) ? "1" :
+          editor.isActive("heading", { level: 2 }) ? "2" :
+          editor.isActive("heading", { level: 3 }) ? "3" : "p"
+        }
+      >
+        <option value="p">Paragraphe</option>
+        <option value="1">Titre 1</option>
+        <option value="2">Titre 2</option>
+        <option value="3">Titre 3</option>
+      </select>
+
+      <div className="toolbar-divider" />
+
+      <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className={editor.isActive("bulletList") ? "is-active" : ""}>• Liste</button>
+      <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className={editor.isActive("orderedList") ? "is-active" : ""}>1. Liste</button>
+      <button type="button" onClick={setLink} className={editor.isActive("link") ? "is-active" : ""}>🔗</button>
+
+      <div className="toolbar-divider" />
+
+      <button type="button" onClick={() => editor.chain().focus().undo().run()}>↩</button>
+      <button type="button" onClick={() => editor.chain().focus().redo().run()}>↪</button>
+    </div>
+  );
+}
+
+function RichTextField({ initialValue, onGetValue, onTouched }) {
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Link.configure({ openOnClick: false, HTMLAttributes: { rel: "noopener noreferrer" } }),
+    ],
+    content: initialValue || "<p></p>",
+    immediatelyRender: false,
+    onUpdate: () => onTouched?.(),
+  });
+
+  useEffect(() => {
+    onGetValue(() => editor?.getHTML() ?? "");
+  });
+
+  return (
+    <>
+      <RichTextToolbar editor={editor} />
+      <div className="tiptap-editor-wrapper">
+        <EditorContent editor={editor} />
+      </div>
+    </>
+  );
+}
 
 export default function TextBlockEditor({
   section,
@@ -24,9 +102,6 @@ export default function TextBlockEditor({
   draftValue = null,
   draftStyles = null,
 }) {
-  // While a draft exists, the editor works on the draft — that's what
-  // "continuing to edit" means. The published value/styles stay untouched
-  // and are what handleDiscard reverts back to.
   const startingValue = hasDraft ? draftValue ?? "" : initialValue;
   const startingStyles = hasDraft ? draftStyles ?? {} : initialStyles ?? {};
 
@@ -96,12 +171,6 @@ export default function TextBlockEditor({
     if (!window.confirm("Annuler le brouillon et revenir à la version publiée ?")) return;
     discardDraft.mutate(blockKey, {
       onSuccess: () => {
-        // Reverts the visible editor back to the published value. Works
-        // correctly for plainText/url (controlled inputs). For richText,
-        // Tiptap only reads its initial content once at mount — a full
-        // resync would need editor.commands.setContent(), left out here
-        // to keep this change contained. In practice, a page refresh after
-        // discarding a rich-text draft shows the correct published text.
         setPlainValue(initialValue);
         setStyles(initialStyles ?? {});
         setTouched(false);
