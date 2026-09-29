@@ -50,45 +50,6 @@ packages/shared Shared validation schemas (Zod)
   with automatic revalidation after each update
 - Responsive design with light/dark theme
 
-## Requirements
 
-- Node.js 20 or higher
-- A PostgreSQL database
-- A Cloudinary account (image hosting)
-- A Resend account (email delivery)
-
-## Installation
-
-```bash
-npm install
-```
-
-Each application (`apps/api`, `apps/web`) requires its own environment
-configuration file, based on the `.env.example` files provided in each
-folder. Database connection values, third-party service keys, and site
-settings must be filled in before startup.
-
-```bash
-npm run db:migrate
-npm run db:seed
-
-npm run dev:api
-npm run dev:web
-```
-
-## Deployment
-
-The project is containerized (Docker) for both applications, enabling
-deployment on any hosting provider that supports Docker containers.
-Production configuration requires environment values specific to the
-chosen host (site URL, database connection, third-party service keys).
-
-## Validation structure
-
-All validation rules (forms, editable content, projects, services) are
-centralized in `packages/shared`, ensuring strict consistency between
-what the interface accepts and what the API validates.
-
----
 
 *Project custom-built for Basma Miamaria.*
