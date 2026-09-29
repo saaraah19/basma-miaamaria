@@ -2,6 +2,10 @@ import { getProjects, getCategories } from "@/lib/api-server";
 import ProjectsFilterGrid from "@/components/public/ProjectsFilterGrid";
 import "./projects.css";
 
+// Renders per-request instead of being attempted during `next build` —
+// avoids depending on the API being reachable at build time.
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Nos Projets",
   description:

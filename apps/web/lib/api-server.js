@@ -17,9 +17,15 @@ const API_URL = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL;
  * tag-based revalidation call.
  */
 async function apiFetch(path, { tags = [], revalidate = 60, ...init } = {}) {
+  // A hard timeout so a slow/unreachable API fails fast instead of hanging.
+  // This matters most during `next build`'s static-generation pass, where
+  // nothing may be listening yet — a fetch that just hangs there blows
+  // past Next's own 60s page-build limit and fails the whole deploy,
+  // instead of hitting the .catch() fallback each caller already has.
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
     next: { tags, revalidate },
+    signal: AbortSignal.timeout(8000),
   });
 
   if (!res.ok) {

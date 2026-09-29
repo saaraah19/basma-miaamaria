@@ -4,6 +4,10 @@ import { toInlineStyle } from "@/lib/blockStyles";
 import DevisForm from "@/components/public/DevisForm";
 import "./devis.css";
 
+// Renders per-request instead of being attempted during `next build` —
+// avoids depending on the API being reachable at build time.
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Demander un Devis",
   description:
