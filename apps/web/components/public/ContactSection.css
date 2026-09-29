@@ -1,5 +1,5 @@
 .contact-section {
-  background: linear-gradient(135deg, var(--color-bg) 0%, rgba(110, 146, 120, 0.05) 100%);
+  background: var(--color-bg);
   padding: 5rem 2rem;
   text-align: center;
   border-top: 3px solid var(--color-primary);
@@ -75,7 +75,7 @@
 .contact-form input:focus,
 .contact-form textarea:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 6px rgba(110, 146, 120, 0.3);
+  box-shadow: 0 0 6px rgba(85, 101, 54, 0.3);
 }
 
 .contact-form button {
@@ -140,22 +140,22 @@
 }
 
 .btn-devis {
-  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  background: var(--color-secondary);
   color: #fff;
 }
 
 .btn-devis:hover {
-  box-shadow: 0 8px 20px rgba(165, 135, 75, 0.3);
+  box-shadow: 0 8px 20px rgba(63, 76, 40, 0.3);
   transform: translateY(-3px);
 }
 
 .btn-rdv {
-  background: linear-gradient(135deg, var(--color-primary), #5a7a69);
+  background: var(--color-primary);
   color: #fff;
 }
 
 .btn-rdv:hover {
-  box-shadow: 0 8px 20px rgba(110, 146, 120, 0.3);
+  box-shadow: 0 8px 20px rgba(85, 101, 54, 0.3);
   transform: translateY(-3px);
 }
 

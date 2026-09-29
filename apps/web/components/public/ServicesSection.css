@@ -22,7 +22,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+  background: var(--color-secondary);
   border-radius: 2px;
 }
 

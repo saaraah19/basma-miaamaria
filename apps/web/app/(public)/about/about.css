@@ -3,7 +3,7 @@
 }
 
 .about-hero {
-  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  background: var(--color-secondary);
   padding: 5rem 2rem;
   text-align: center;
   color: #fff;
@@ -67,14 +67,14 @@
   background: var(--color-surface);
   border-radius: 12px;
   border-left: 4px solid var(--color-secondary);
-  box-shadow: 0 8px 20px rgba(110, 146, 120, 0.1);
+  box-shadow: 0 8px 20px rgba(85, 101, 54, 0.1);
   transition: all 0.3s ease;
 }
 
 .about-section:hover {
   transform: translateY(-6px);
   border-left-color: var(--color-primary);
-  box-shadow: 0 12px 30px rgba(110, 146, 120, 0.2);
+  box-shadow: 0 12px 30px rgba(85, 101, 54, 0.2);
 }
 
 .section-title {
@@ -87,7 +87,7 @@
 .section-divider {
   width: 50px;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+  background: var(--color-secondary);
   margin-bottom: 1.5rem;
   border-radius: 2px;
 }
@@ -148,7 +148,7 @@
 
 .expertise-item:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 8px 20px rgba(110, 146, 120, 0.2);
+  box-shadow: 0 8px 20px rgba(85, 101, 54, 0.2);
   transform: translateY(-4px);
 }
 
@@ -166,7 +166,7 @@
 }
 
 .about-cta {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  background: var(--color-primary);
   padding: 4rem 2rem;
   text-align: center;
   color: #fff;

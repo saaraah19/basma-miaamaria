@@ -5,7 +5,7 @@ import "./projects.css";
 export const metadata = {
   title: "Nos Projets",
   description:
-    "Découvrez le portfolio de Basma Miamaria : projets d'architecture, de décoration intérieure et de rénovation réalisés à Oran et en Algérie.",
+    "Découvrez le portfolio de Basma Miaamaria : projets d'architecture, de décoration intérieure et de rénovation réalisés à Oran et en Algérie.",
   alternates: { canonical: "/projects" },
 };
 

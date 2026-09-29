@@ -12,7 +12,7 @@ const callId = Math.random().toString(36).slice(2, 8);
     return {};
   });
   
-  const title = content?.title?.value ?? "Basma Miamaria";
+  const title = content?.title?.value ?? "Basma Miaamaria";
   const subtitle = content?.subtitle?.value ?? "Architecture et décoration intérieure";
   const btnText = content?.btn_text?.value ?? "Découvrez nos projets";
   const btnLink = content?.btn_link?.value ?? "/projects";

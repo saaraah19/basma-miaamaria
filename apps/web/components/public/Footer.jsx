@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaFacebookF, FaInstagram, FaPinterestP, FaLinkedinIn } from "react-icons/fa";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { getSection } from "@/lib/api-server";
 import { sanitize } from "@/lib/sanitize";
 import "./Footer.css";
@@ -23,8 +23,6 @@ export default async function Footer() {
   // url per CONTENT_REGISTRY
   const facebook = content?.facebook?.value ?? "https://www.facebook.com/BasmaMiaamaria";
   const instagram = content?.instagram?.value ?? "https://www.instagram.com/basma_miaamaria/";
-  const pinterest = content?.pinterest?.value ?? "#";
-  const linkedin = content?.linkedin?.value ?? "#";
 
   return (
     <footer className="footer">
@@ -32,12 +30,12 @@ export default async function Footer() {
         <div className="footer-section footer-brand">
           <Image
             src="/logo_bsma.jpg"
-            alt="Basma Miamaria Logo"
+            alt="Basma Miaamaria Logo"
             width={120}
             height={60}
             className="footer-logo-image"
           />
-          <h3 className="footer-logo">Basma Miamaria</h3>
+          <h3 className="footer-logo">Basma Miaamaria</h3>
          <div className="footer-tagline" dangerouslySetInnerHTML={{ __html: sanitize(tagline) }} />
 <div
   className="footer-description"
@@ -83,12 +81,6 @@ export default async function Footer() {
             <a href={instagram} className="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
               <FaInstagram />
             </a>
-            <a href={pinterest} className="social-icon" aria-label="Pinterest" target="_blank" rel="noopener noreferrer">
-              <FaPinterestP />
-            </a>
-            <a href={linkedin} className="social-icon" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-              <FaLinkedinIn />
-            </a>
           </div>
         </div>
       </div>
@@ -96,7 +88,7 @@ export default async function Footer() {
       <div className="footer-divider" />
 
       <div className="footer-bottom">
-        <p className="footer-copyright">© {currentYear} Basma Miamaria. Tous droits réservés.</p>
+        <p className="footer-copyright">© {currentYear} Basma Miaamaria. Tous droits réservés.</p>
         <div className="footer-bottom-links">
           <a href="#privacy">Politique de Confidentialité</a>
           <a href="#terms">Conditions d&apos;Utilisation</a>

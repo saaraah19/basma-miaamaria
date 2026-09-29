@@ -6,7 +6,7 @@ import "./about.css";
 export const metadata = {
   title: "À Propos",
   description:
-    "Découvrez l'histoire, les valeurs et les domaines d'expertise du cabinet Basma Miamaria — architecture et décoration intérieure à Oran.",
+    "Découvrez l'histoire, les valeurs et les domaines d'expertise du cabinet Basma Miaamaria — architecture et décoration intérieure à Oran.",
   alternates: { canonical: "/about" },
 };
 
@@ -41,7 +41,7 @@ const parseList = (raw, fallback) => {
 export default async function AboutPage() {
   const about = await getSection("about").catch(() => ({}));
 
-  const title = about.title?.value ?? "À Propos de Basma Miamaria";
+  const title = about.title?.value ?? "À Propos de Basma Miaamaria";
   const subtitle = about.subtitle?.value ?? "Excellence en architecture et décoration intérieure";
   const histoireTitle = about.histoire_title?.value ?? "Notre Histoire";
   const histoire1 = about.histoire_1?.value ?? "";

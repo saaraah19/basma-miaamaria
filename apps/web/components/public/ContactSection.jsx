@@ -27,7 +27,7 @@ export default async function ContactSection() {
         {mapsUrl && (
           <div className="contact-map">
             <iframe
-              title="Localisation Bureau Basma Miamaria"
+              title="Localisation Bureau Basma Miaamaria"
               src={mapsUrl}
               width="100%"
               height="100%"

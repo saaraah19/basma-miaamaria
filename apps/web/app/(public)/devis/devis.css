@@ -83,7 +83,7 @@
 .devis-form textarea:focus,
 .devis-form select:focus {
   border-color: var(--color-secondary);
-  box-shadow: 0 0 0 3px rgba(165, 135, 75, 0.1);
+  box-shadow: 0 0 0 3px rgba(63, 76, 40, 0.1);
 }
 
 .devis-form textarea {

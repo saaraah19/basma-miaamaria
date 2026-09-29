@@ -6,14 +6,14 @@
   display: block;
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 20px rgba(110, 146, 120, 0.15);
+  box-shadow: 0 8px 20px rgba(85, 101, 54, 0.15);
   border: 2px solid transparent;
   background: var(--color-surface);
 }
 
 .project-card:hover {
   transform: scale(1.03);
-  box-shadow: 0 16px 40px rgba(110, 146, 120, 0.3);
+  box-shadow: 0 16px 40px rgba(85, 101, 54, 0.3);
   border-color: var(--color-secondary);
 }
 .project-card-image {
@@ -44,7 +44,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(110, 146, 120, 0.75) 0%, rgba(165, 135, 75, 0.75) 100%);
+  background: rgba(63, 76, 40, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;

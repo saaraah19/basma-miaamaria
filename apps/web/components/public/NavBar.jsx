@@ -10,7 +10,7 @@ export default async function NavBar() {
   // recoverable, a 500 on every page is not.
   const content = await getSection("navbar").catch(() => ({}));
 
-  const siteName = content?.site_name?.value ?? "Basma Miamaria";
+  const siteName = content?.site_name?.value ?? "Basma Miaamaria";
   const btnDevisText = content?.btn_devis_text?.value ?? "Demander un devis";
 
   return (
@@ -18,7 +18,7 @@ export default async function NavBar() {
       <Link href="/" className="logo-container">
         <Image
           src="/logo_bsma.jpg"
-          alt="Basma Miamaria Logo"
+          alt="Basma Miaamaria Logo"
           width={50}
           height={50}
           className="logo-image"

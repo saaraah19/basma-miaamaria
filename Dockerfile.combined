@@ -1,0 +1,64 @@
+# Combined web + api service — runs both processes in one container so
+# they can share a single Render "Starter" plan instead of two.
+#
+# Build from the repo root:
+#   docker build -f Dockerfile.combined -t bsma-combined .
+
+FROM node:20-alpine AS base
+WORKDIR /app
+
+# ---- deps (both workspaces) -----------------------------------------------
+FROM base AS deps
+COPY package.json package-lock.json ./
+COPY apps/web/package.json apps/web/package.json
+COPY apps/api/package.json apps/api/package.json
+COPY packages/shared/package.json packages/shared/package.json
+RUN npm ci --workspace=apps/web --workspace=apps/api --workspace=packages/shared --include-workspace-root
+
+# ---- build web + generate prisma client ------------------------------------
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
+COPY packages/shared packages/shared
+COPY apps/web apps/web
+COPY apps/api apps/api
+
+RUN npx prisma generate --schema=apps/api/prisma/schema.prisma
+
+# Web talks to the API over localhost inside this same container now —
+# these two are only used at build time for anything baked into the
+# client bundle (there shouldn't be any server-only fetches at build time
+# here since api-server.js reads INTERNAL_API_URL at runtime, not build time).
+ARG NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_API_URL=/api
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN npm run build --workspace=apps/web
+
+# ---- runtime: both processes in one image ----------------------------------
+FROM base AS runner
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+# Express listens on this internal port; nothing outside the container
+# can reach it directly — only Next's rewrite (see next.config.js) does.
+ENV API_PORT=5000
+ENV INTERNAL_API_URL=http://localhost:5000/api
+
+# API: source + its own node_modules (has Prisma client + deps Next doesn't need)
+COPY --from=build /app/apps/api ./apps/api
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+
+# Web: standalone output (already self-contained)
+COPY --from=build /app/apps/web/.next/standalone ./
+COPY --from=build /app/apps/web/public ./apps/web/public
+COPY --from=build /app/apps/web/.next/static ./apps/web/.next/static
+
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
+
+EXPOSE 3000
+CMD ["./start.sh"]

@@ -7,7 +7,7 @@ import "./contact.css";
 export const metadata = {
   title: "Contact",
   description:
-    "Contactez Basma Miamaria pour votre projet d'architecture ou de décoration intérieure à Oran. Téléphone, email, adresse et formulaire de contact.",
+    "Contactez Basma Miaamaria pour votre projet d'architecture ou de décoration intérieure à Oran. Téléphone, email, adresse et formulaire de contact.",
   alternates: { canonical: "/contact" },
 };
 

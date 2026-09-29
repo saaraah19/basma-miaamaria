@@ -99,12 +99,12 @@
 .thumbs-swiper .swiper-slide-thumb-active {
   opacity: 1;
   border-color: var(--color-secondary);
-  box-shadow: 0 8px 20px rgba(165, 135, 75, 0.3);
+  box-shadow: 0 8px 20px rgba(63, 76, 40, 0.3);
   transform: scale(1.08);
 }
 
 .project-detail-info {
-  background: linear-gradient(135deg, rgba(110, 146, 120, 0.08) 0%, rgba(165, 135, 75, 0.05) 100%);
+  background: rgba(85, 101, 54, 0.06);
   padding: 2rem;
   border-radius: 12px;
   border-left: 3px solid var(--color-primary);
@@ -152,19 +152,19 @@
 
 .project-detail-info .btn-devis {
   display: inline-block;
-  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  background: var(--color-secondary);
   color: #fff;
   padding: 0.9rem 1.8rem;
   border-radius: 8px;
   text-decoration: none;
   margin-top: 1.5rem;
   transition: all 0.3s;
-  box-shadow: 0 6px 20px rgba(165, 135, 75, 0.2);
+  box-shadow: 0 6px 20px rgba(63, 76, 40, 0.2);
 }
 
 .project-detail-info .btn-devis:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(165, 135, 75, 0.3);
+  box-shadow: 0 10px 30px rgba(63, 76, 40, 0.3);
 }
 
 @media (max-width: 900px) {

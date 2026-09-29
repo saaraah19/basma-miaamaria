@@ -1,10 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand palette — client's chosen colors, unchanged from the original site */
-  --color-primary: #6e9278;
-  --color-secondary: #a5874b;
-  --color-accent: #1a1a1a;
+  /* Brand palette — olive green, flat (no gradients) per client request */
+  --color-primary: #556536;
+  --color-secondary: #3f4c28;
+  --color-accent: #2f3a1a;
+
+  /* Fonts — Century Gothic (system font on Windows/macOS), with safe
+     geometric-sans fallbacks for machines that don't have it installed. */
+  --font-heading: "Century Gothic", CenturyGothic, var(--font-questrial), AppleGothic, sans-serif;
+  --font-body: "Century Gothic", CenturyGothic, var(--font-questrial), AppleGothic, sans-serif;
 
   /* Marketing site surface */
   --color-bg: #ffffff;
@@ -15,13 +20,13 @@
 
   /* Form feedback banners (success/error) — theme-aware so they stay
      legible instead of showing a bright light-mode block on a dark page. */
-  --color-success-bg: #f0f7f2;
-  --color-success-border: #c8dece;
+  --color-success-bg: #eff2e8;
+  --color-success-border: #cfd8bd;
   --color-success-text: var(--color-primary);
   --color-error-bg: #fdf2f2;
   --color-error-border: #f5c6c6;
   --color-error-text: #c0392b;
-  --color-icon-bg: #fdf6ec;
+  --color-icon-bg: #ecefe4;
 
   --radius: 10px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -33,13 +38,13 @@
   --color-text: #e0e0e0;
   --color-muted: #bbbbbb;
   --color-border: #333333;
-  --color-success-bg: rgba(110, 146, 120, 0.15);
-  --color-success-border: rgba(110, 146, 120, 0.35);
-  --color-success-text: #a8d4b3;
+  --color-success-bg: rgba(85, 101, 54, 0.15);
+  --color-success-border: rgba(85, 101, 54, 0.35);
+  --color-success-text: #c3d68f;
   --color-error-bg: rgba(220, 38, 38, 0.15);
   --color-error-border: rgba(220, 38, 38, 0.35);
   --color-error-text: #f5a3a3;
-  --color-icon-bg: rgba(165, 135, 75, 0.15);
+  --color-icon-bg: rgba(63, 76, 40, 0.15);
 }
 
 /* Admin dashboard surface — same brand accents, cooler/quieter neutrals
@@ -69,7 +74,7 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-body, "Inter", sans-serif);
+  font-family: var(--font-body, sans-serif);
   transition: background 0.3s, color 0.3s;
 }
 

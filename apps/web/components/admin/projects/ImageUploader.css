@@ -12,7 +12,7 @@
 .upload-zone:hover,
 .upload-zone.drag-over {
   border-color: var(--color-primary);
-  background: rgba(110, 146, 120, 0.05);
+  background: rgba(85, 101, 54, 0.05);
 }
 
 .upload-zone .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
@@ -31,7 +31,7 @@
 }
 
 .uploading-bar {
-  background: rgba(110, 146, 120, 0.1);
+  background: rgba(85, 101, 54, 0.1);
   color: var(--color-primary);
   padding: 0.6rem 1rem;
   border-radius: 8px;
@@ -163,5 +163,5 @@
 .btn-del { background: rgba(220, 38, 38, 0.9); }
 .btn-del:hover { background: #dc2626; }
 
-.btn-cover { background: rgba(110, 146, 120, 0.9); }
+.btn-cover { background: rgba(85, 101, 54, 0.9); }
 .btn-cover:hover { background: var(--color-primary); }

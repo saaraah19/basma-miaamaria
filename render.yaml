@@ -1,17 +1,17 @@
 services:
   - type: web
-    name: bsma-api
+    name: bsma-web
     runtime: docker
-    dockerfilePath: ./apps/api/Dockerfile
+    dockerfilePath: ./Dockerfile.combined
     dockerContext: .
+    plan: starter
     preDeployCommand: "npx prisma migrate deploy --schema=./apps/api/prisma/schema.prisma"
     envVars:
+      # Neon — not a Render-managed database, so this stays a manual value
+      # (see the note below about the unused bsma-postgres block this
+      # replaces).
       - key: DATABASE_URL
-        fromDatabase:
-          name: bsma-postgres
-          property: connectionString
-      - key: PORT
-        value: 5000
+        sync: false
       - key: NODE_ENV
         value: production
       - key: COOKIE_SECURE
@@ -19,7 +19,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRES_IN
-        value: "2h"
+        value: "6h"
       - key: CLIENT_URL
         sync: false
       - key: CLOUDINARY_CLOUD_NAME
@@ -32,22 +32,13 @@ services:
         sync: false
       - key: CONTACT_EMAIL
         sync: false
-      - key: REVALIDATE_SECRET
-        generateValue: true
-
-  - type: web
-    name: bsma-web
-    runtime: docker
-    dockerfilePath: ./apps/web/Dockerfile
-    dockerContext: .
-    envVars:
-      - key: NEXT_PUBLIC_API_URL
-        sync: false
       - key: NEXT_PUBLIC_SITE_URL
         sync: false
+      # Both the API and the revalidate route now live in the same
+      # container, so one generated value covers both sides instead of
+      # needing to be copy-pasted between two services.
       - key: REVALIDATE_SECRET
-        sync: false
-
-databases:
-  - name: bsma-postgres
-    plan: starter
+        generateValue: true
+      # No longer sync:false / manual — it's always this fixed relative
+      # path now that api and web are the same origin, so it's baked
+      # into Dockerfile.combined directly rather than listed here.

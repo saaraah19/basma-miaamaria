@@ -17,6 +17,17 @@ const nextConfig = {
   // crashes at runtime with "Cannot find module 'next'".
   outputFileTracingRoot: path.join(__dirname, "../../"),
 
+  // Proxies browser + same-container requests to the Express API process,
+  // which now runs alongside this one instead of as a separate service.
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://localhost:5000/api/:path*",
+      },
+    ];
+  },
+
   images: {
     remotePatterns: [
       {

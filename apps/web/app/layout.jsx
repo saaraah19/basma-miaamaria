@@ -1,36 +1,33 @@
-import { Playfair_Display, Inter } from "next/font/google";
+import { Questrial } from "next/font/google";
 import "./globals.css";
+
+// Loaded web fallback for visitors who do not have Century Gothic installed
+// (phones, Linux...). Century Gothic itself stays first in the font stack.
+const questrial = Questrial({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-questrial",
+  display: "swap",
+});
 import { GoogleAnalytics } from "@next/third-parties/google";
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-heading",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 // Every page's metadata (set via generateMetadata in each route) is merged
 // into this template. Pages that don't override `title` fall back cleanly
-// to "Basma Miamaria" instead of the original app's static "frontend".
+// to "Basma Miaamaria" instead of the original app's static "frontend".
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Basma Miamaria — Architecture & Décoration Intérieure",
-    template: "%s | Basma Miamaria",
+    default: "Basma Miaamaria — Architecture & Décoration Intérieure",
+    template: "%s | Basma Miaamaria",
   },
   description:
     "Cabinet d'architecture et de décoration intérieure à Oran, Algérie. Conception, rénovation et aménagement d'espaces sur mesure.",
   openGraph: {
     type: "website",
     locale: "fr_DZ",
-    siteName: "Basma Miamaria",
+    siteName: "Basma Miaamaria",
   },
   verification: {
     google: "5HHHTnb8RifasRShV6Nib29xKcaj3J4xtH6SY7y5H64",
@@ -43,7 +40,7 @@ export const metadata = {
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "ArchitectureFirm",
-  name: "Basma Miamaria",
+  name: "Basma Miaamaria",
   image: `${siteUrl}/logo_bsma.jpg`,
   url: siteUrl,
   telephone: "+213562580995",
@@ -81,7 +78,7 @@ const localBusinessSchema = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fr" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="fr" className={questrial.variable}>
       <head>
         <script
           type="application/ld+json"

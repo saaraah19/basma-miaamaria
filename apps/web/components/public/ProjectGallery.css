@@ -9,7 +9,7 @@
   border-radius: 12px;
   overflow: hidden;
   background: var(--color-bg);
-  box-shadow: 0 10px 30px rgba(165, 135, 75, 0.15);
+  box-shadow: 0 10px 30px rgba(63, 76, 40, 0.15);
   border: 2px solid var(--color-secondary);
 }
 
@@ -65,7 +65,7 @@
   justify-content: center;
   gap: 8px;
   padding: 1rem;
-  background: rgba(110, 146, 120, 0.08);
+  background: rgba(85, 101, 54, 0.08);
   border-radius: 10px;
 }
 
@@ -91,7 +91,7 @@
 .gallery-thumb.is-active {
   opacity: 1;
   border-color: var(--color-secondary);
-  box-shadow: 0 8px 20px rgba(165, 135, 75, 0.3);
+  box-shadow: 0 8px 20px rgba(63, 76, 40, 0.3);
 }
 
 .gallery-thumb img {

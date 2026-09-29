@@ -8,7 +8,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(110, 146, 120, 0.1);
+  box-shadow: 0 2px 8px rgba(85, 101, 54, 0.1);
 }
 
 .logo-container {
@@ -30,11 +30,11 @@
   object-fit: contain;
   border-radius: 4px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(165, 135, 75, 0.2);
+  box-shadow: 0 2px 8px rgba(63, 76, 40, 0.2);
 }
 
 .logo-container:hover .logo-image {
-  box-shadow: 0 4px 12px rgba(110, 146, 120, 0.3);
+  box-shadow: 0 4px 12px rgba(85, 101, 54, 0.3);
 }
 
 .logo-text {
@@ -78,7 +78,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+  background: var(--color-secondary);
   transition: width 0.3s;
 }
 
@@ -87,7 +87,7 @@
 }
 
 .devis-button {
-  background: linear-gradient(90deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  background: var(--color-secondary);
   color: #fff;
   padding: 0.7rem 1.8rem;
   border-radius: 5px;
@@ -96,14 +96,14 @@
   transition: all 0.3s ease;
   font-size: 0.95rem;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(165, 135, 75, 0.3);
+  box-shadow: 0 4px 12px rgba(63, 76, 40, 0.3);
   flex-shrink: 0;
 }
 
 .devis-button:hover {
-  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  background: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(110, 146, 120, 0.4);
+  box-shadow: 0 6px 16px rgba(85, 101, 54, 0.4);
 }
 
 .navbar-right {

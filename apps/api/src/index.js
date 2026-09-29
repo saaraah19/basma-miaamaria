@@ -57,7 +57,7 @@ app.use(express.json({ limit: "1mb" }));
 // have their own stricter limiters defined in their route files.
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 300,
+  max: 3000,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: "Trop de requêtes, réessaie dans 15 minutes." },

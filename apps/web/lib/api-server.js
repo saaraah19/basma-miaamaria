@@ -1,4 +1,10 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// Runs inside the same container as the Express API now (see
+// Dockerfile.combined), so it calls it directly over localhost instead
+// of going out to the public domain and back in through the Next.js
+// rewrite in next.config.js — same destination, one less network hop.
+// Falls back to NEXT_PUBLIC_API_URL so this file still works unchanged
+// in local dev (`npm run dev:web` + `npm run dev:api` as two processes).
+const API_URL = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Thin wrapper around fetch for use inside Server Components / route

@@ -7,7 +7,7 @@ import "./devis.css";
 export const metadata = {
   title: "Demander un Devis",
   description:
-    "Décrivez votre projet d'architecture, de décoration intérieure ou de rénovation et recevez une estimation personnalisée de Basma Miamaria.",
+    "Décrivez votre projet d'architecture, de décoration intérieure ou de rénovation et recevez une estimation personnalisée de Basma Miaamaria.",
   alternates: { canonical: "/devis" },
 };
 

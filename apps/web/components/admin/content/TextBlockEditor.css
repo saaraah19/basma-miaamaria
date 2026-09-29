@@ -96,7 +96,7 @@
 
 .tiptap-editor-wrapper:focus-within {
   border-color: var(--color-secondary);
-  box-shadow: 0 0 0 3px rgba(165, 135, 75, 0.08);
+  box-shadow: 0 0 0 3px rgba(63, 76, 40, 0.08);
 }
 
 .tiptap-editor-wrapper .ProseMirror {

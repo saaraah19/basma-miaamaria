@@ -7,7 +7,7 @@ import ContactSection from "@/components/public/ContactSection";
 export const metadata = {
   title: "Accueil",
   description:
-    "Basma Miamaria — cabinet d'architecture et de décoration intérieure à Oran. Découvrez nos projets, nos services et demandez un devis gratuit.",
+    "Basma Miaamaria — cabinet d'architecture et de décoration intérieure à Oran. Découvrez nos projets, nos services et demandez un devis gratuit.",
   alternates: { canonical: "/" },
 };
 
