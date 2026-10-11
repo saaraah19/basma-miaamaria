@@ -1,8 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProject } from "@/lib/api-server";
+import { getProject, getProjects } from "@/lib/api-server";
 import ProjectGallery from "@/components/public/ProjectGallery";
 import "./project-detail.css";
+
+// Static export: one HTML page per project, generated at build time. A project
+// created later appears after the next rebuild (triggered by the API, ~2-3 min).
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const projects = await getProjects();
+  return projects.map((p) => ({ slug: p.slug }));
+}
 
 async function loadProject(slug) {
   try {
@@ -24,7 +33,7 @@ export async function generateMetadata({ params }) {
   return {
     title: project.title,
     description,
-    alternates: { canonical: `/projects/${project.slug}` },
+    alternates: { canonical: `/projects/${project.slug}/` },
     openGraph: {
       title: project.title,
       description,

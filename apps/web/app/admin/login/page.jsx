@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLogin } from "@/lib/auth-client";
+import ApiWarmup from "@/components/public/ApiWarmup";
 import "./login.css";
 
 function LoginForm() {
@@ -28,6 +29,7 @@ function LoginForm() {
 
   return (
     <div className="login-page">
+      <ApiWarmup />
       <div className="login-card">
         <div className="login-header">
           <h1>Panel Admin</h1>

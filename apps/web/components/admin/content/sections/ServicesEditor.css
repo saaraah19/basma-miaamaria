@@ -33,7 +33,7 @@
 
 .services-row-icon {
   font-size: 1.3rem;
-  color: var(--color-secondary);
+  color: var(--color-heading);
   display: flex;
 }
 

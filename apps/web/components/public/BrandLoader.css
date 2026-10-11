@@ -1,0 +1,149 @@
+.brand-loader {
+  --loader-line: var(--color-primary);
+
+  min-height: 72vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: var(--color-text);
+
+  /* N'apparaît qu'après 0,3 s : un chargement rapide ne montre rien. */
+  opacity: 0;
+  animation: brand-loader-in 0.5s ease 0.3s forwards;
+}
+
+[data-theme="dark"] .brand-loader {
+  --loader-line: #a9bd7e;
+}
+
+@keyframes brand-loader-in {
+  to { opacity: 1; }
+}
+
+/* ── Plan d'architecte ─────────────────────────────────────────── */
+.brand-loader__plan {
+  width: min(280px, 72vw);
+  height: auto;
+  overflow: visible;
+  color: var(--loader-line); /* utilisé par la grille (currentColor) */
+}
+
+.brand-loader__grid {
+  opacity: 0.22;
+}
+
+.brand-loader__trace {
+  fill: none;
+  stroke: var(--loader-line);
+  stroke-width: 1.4;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: brand-loader-draw 5s ease-in-out var(--d) infinite;
+}
+
+/* Le trait se dessine, reste affiché, puis s'efface en fondu. */
+@keyframes brand-loader-draw {
+  0%   { stroke-dashoffset: 1; opacity: 1; }
+  45%  { stroke-dashoffset: 0; opacity: 1; }
+  85%  { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* ── Texte ─────────────────────────────────────────────────────── */
+.brand-loader__name {
+  margin: 0;
+  padding-left: 0.42em; /* compense l'espacement après la dernière lettre */
+  font-family: var(--font-heading);
+  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  font-weight: 400;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  animation: brand-loader-rise 0.9s ease 0.5s both;
+}
+
+.brand-loader__tag {
+  margin: 0;
+  padding-left: 0.2em;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  animation: brand-loader-rise 0.9s ease 0.75s both;
+}
+
+@keyframes brand-loader-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Barre de progression (aplat, sans dégradé) ────────────────── */
+.brand-loader__track {
+  position: relative;
+  width: 128px;
+  height: 2px;
+  margin-top: 0.4rem;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.brand-loader__bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 38px;
+  background: var(--loader-line);
+  animation: brand-loader-slide 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes brand-loader-slide {
+  from { transform: translateX(-38px); }
+  to   { transform: translateX(128px); }
+}
+
+/* ── Message de patience, seulement si l'attente se prolonge ───── */
+.brand-loader__hint {
+  margin: 0.4rem 0 0;
+  max-width: 28rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+  opacity: 0;
+  animation: brand-loader-in 0.8s ease 7s forwards;
+}
+
+/* Texte pour lecteurs d'écran uniquement */
+.brand-loader__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Respect de « réduire les animations » ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .brand-loader__trace {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .brand-loader__bar {
+    animation: none;
+    width: 100%;
+  }
+  .brand-loader__name,
+  .brand-loader__tag {
+    animation: none;
+  }
+}

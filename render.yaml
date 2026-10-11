@@ -1,17 +1,38 @@
+# REFERENCE ONLY. Your Render services are configured by hand in the dashboard
+# (they are not linked to a Blueprint), so this file changes nothing by itself.
+# It documents the target setup: a Static Site for the public website + the API.
 services:
+  # ── Public website + admin UI: static files on Render's CDN. Always on. Free. ──
   - type: web
-    name: bsma-web
-    runtime: docker
-    dockerfilePath: ./Dockerfile.combined
-    dockerContext: .
-    plan: starter
-    preDeployCommand: "npx prisma migrate deploy --schema=./apps/api/prisma/schema.prisma"
+    name: bsma-site
+    runtime: static
+    buildCommand: npm ci --workspace=apps/web --workspace=packages/shared --include-workspace-root && npm run build:static --workspace=apps/web
+    staticPublishPath: apps/web/out
     envVars:
-      # Neon — not a Render-managed database, so this stays a manual value
-      # (see the note below about the unused bsma-postgres block this
-      # replaces).
-      - key: DATABASE_URL
+      - key: NODE_VERSION
+        value: "20"
+      # Baked into the files at build time (not read at runtime).
+      - key: NEXT_PUBLIC_API_URL        # e.g. https://bsma-api.onrender.com/api
         sync: false
+      - key: NEXT_PUBLIC_SITE_URL       # the public URL of THIS static site
+        sync: false
+      - key: NEXT_PUBLIC_GA_ID
+        sync: false
+
+  # ── API (Express + Prisma + Neon). Sleeps on the free plan, which is now invisible
+  #    to visitors because the website itself no longer depends on it to load. ──
+  - type: web
+    name: bsma-api
+    runtime: docker
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    # Migrations: run `npx prisma migrate deploy --schema=./apps/api/prisma/schema.prisma`
+    # yourself when the schema changes (Pre-Deploy Command is a paid-plan feature).
+    envVars:
+      - key: DATABASE_URL               # your Neon connection string
+        sync: false
+      - key: PORT
+        value: 5000
       - key: NODE_ENV
         value: production
       - key: COOKIE_SECURE
@@ -20,7 +41,7 @@ services:
         generateValue: true
       - key: JWT_EXPIRES_IN
         value: "6h"
-      - key: CLIENT_URL
+      - key: CLIENT_URL                 # EXACT URL of the static site (https, no trailing slash)
         sync: false
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
@@ -32,13 +53,5 @@ services:
         sync: false
       - key: CONTACT_EMAIL
         sync: false
-      - key: NEXT_PUBLIC_SITE_URL
+      - key: RENDER_DEPLOY_HOOK_URL     # the static site's Deploy Hook (rebuilds it after edits)
         sync: false
-      # Both the API and the revalidate route now live in the same
-      # container, so one generated value covers both sides instead of
-      # needing to be copy-pasted between two services.
-      - key: REVALIDATE_SECRET
-        generateValue: true
-      # No longer sync:false / manual — it's always this fixed relative
-      # path now that api and web are the same origin, so it's baked
-      # into Dockerfile.combined directly rather than listed here.

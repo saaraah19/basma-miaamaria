@@ -6,6 +6,22 @@
   --color-secondary: #3f4c28;
   --color-accent: #2f3a1a;
 
+  /* Gold of the logo (measured on public/logo_bsma.jpg). Reserved for LARGE
+     headings: it is 4.0:1 on white and 4.7:1 on the dark theme, which passes
+     WCAG AA for large text (3:1) but not for small body text (4.5:1). */
+  --color-gold: #9a7b44;
+
+  /* Text colors, by the surface they sit on. Brand olives are DARK, so using
+     them directly as text only works on a light page — never on a dark page,
+     the footer, or a photo. Use these tokens instead of --color-primary /
+     --color-secondary whenever a color is applied to text:
+       heading / link  → text on the page background (light AND dark theme)
+       on-dark         → text on dark surfaces (footer, photo overlays)      */
+  --color-heading: var(--color-secondary);
+  --color-link: var(--color-primary);
+  --color-on-dark: #b9cb8f;
+  --color-on-dark-strong: #d8e4b8;
+
   /* Fonts — Century Gothic (system font on Windows/macOS), with safe
      geometric-sans fallbacks for machines that don't have it installed. */
   --font-heading: "Century Gothic", CenturyGothic, var(--font-questrial), AppleGothic, sans-serif;
@@ -15,7 +31,7 @@
   --color-bg: #ffffff;
   --color-surface: #ffffff;
   --color-text: #333333;
-  --color-muted: #888888;
+  --color-muted: #6a6a65; /* was #888 (3.5:1) — now passes WCAG AA on white (5.4:1) */
   --color-border: #e5e5e5;
 
   /* Form feedback banners (success/error) — theme-aware so they stay
@@ -33,6 +49,8 @@
 }
 
 [data-theme="dark"] {
+  --color-heading: #b9cb8f;
+  --color-link: #a8bd78;
   --color-bg: #121212;
   --color-surface: #1e1e1e;
   --color-text: #e0e0e0;

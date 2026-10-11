@@ -1,42 +1,49 @@
-// Runs inside the same container as the Express API now (see
-// Dockerfile.combined), so it calls it directly over localhost instead
-// of going out to the public domain and back in through the Next.js
-// rewrite in next.config.js — same destination, one less network hop.
-// Falls back to NEXT_PUBLIC_API_URL so this file still works unchanged
-// in local dev (`npm run dev:web` + `npm run dev:api` as two processes).
-const API_URL = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL;
+// The public site is a static export: every call below runs ONCE, while
+// `next build` generates the pages — never when a visitor opens the site.
+//
+// Safety net: if the API is unreachable (it sleeps on Render's free plan),
+// the pages' own `.catch(() => defaults)` would silently bake an EMPTY site.
+// So during the build we retry, and if the API still doesn't answer we abort
+// the build. A failed build never replaces the live site — the previous good
+// version simply stays online.
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const IS_BUILD = process.env.NEXT_PHASE === "phase-production-build";
+const TIMEOUT_MS = 60_000;
+const ATTEMPTS = 3;
 
-/**
- * Thin wrapper around fetch for use inside Server Components / route
- * handlers. Every call is tagged so an admin mutation can call
- * `revalidateTag("projects")` and the public pages reflect the edit on
- * next request — no waiting for the next full rebuild, no client-side
- * loading spinners on marketing pages.
- *
- * `revalidate` defaults to 60s as a safety net even without an explicit
- * tag-based revalidation call.
- */
-async function apiFetch(path, { tags = [], revalidate = 60, ...init } = {}) {
-  // A hard timeout so a slow/unreachable API fails fast instead of hanging.
-  // This matters most during `next build`'s static-generation pass, where
-  // nothing may be listening yet — a fetch that just hangs there blows
-  // past Next's own 60s page-build limit and fails the whole deploy,
-  // instead of hitting the .catch() fallback each caller already has.
-  const res = await fetch(`${API_URL}${path}`, {
-    ...init,
-    next: { tags, revalidate },
-    signal: AbortSignal.timeout(8000),
-  });
+// `tags` / `revalidate` are kept in the signature so callers don't change,
+// but there is no runtime cache anymore: a content change triggers a rebuild.
+async function apiFetch(path, { tags: _tags, revalidate: _revalidate, ...init } = {}) {
+  let lastError;
 
-  if (!res.ok) {
-    // Let callers decide how to handle 404 vs 500 — surfacing the status
-    // means a page can render its own notFound() instead of a generic error.
-    const error = new Error(`API request failed: ${res.status} ${path}`);
-    error.status = res.status;
-    throw error;
+  for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(`${API_URL}${path}`, {
+        ...init,
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+
+      if (res.ok) return res.json();
+
+      const error = new Error(`API request failed: ${res.status} ${path}`);
+      error.status = res.status;
+      if (res.status < 500) throw error; // 404 etc.: a real answer, no retry
+      lastError = error;
+    } catch (err) {
+      if (err.status && err.status < 500) throw err;
+      lastError = err;
+    }
   }
 
-  return res.json();
+  if (IS_BUILD) {
+    console.error(
+      `\n[api-server] FATAL: ${path} unreachable after ${ATTEMPTS} attempts ` +
+        `(${lastError?.message}). Aborting the build so the previous good ` +
+        `version of the site stays live.\n`
+    );
+    process.exit(1);
+  }
+  throw lastError;
 }
 
 export const getSection = (section) =>

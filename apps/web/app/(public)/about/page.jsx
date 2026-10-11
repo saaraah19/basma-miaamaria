@@ -7,7 +7,7 @@ export const metadata = {
   title: "À Propos",
   description:
     "Découvrez l'histoire, les valeurs et les domaines d'expertise du cabinet Basma Miaamaria — architecture et décoration intérieure à Oran.",
-  alternates: { canonical: "/about" },
+  alternates: { canonical: "/about/" },
 };
 
 const DEFAULT_VALEURS = [

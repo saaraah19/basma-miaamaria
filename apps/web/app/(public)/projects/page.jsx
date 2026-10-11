@@ -2,39 +2,26 @@ import { getProjects, getCategories } from "@/lib/api-server";
 import ProjectsFilterGrid from "@/components/public/ProjectsFilterGrid";
 import "./projects.css";
 
-// Renders per-request instead of being attempted during `next build` —
-// avoids depending on the API being reachable at build time.
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "Nos Projets",
   description:
     "Découvrez le portfolio de Basma Miaamaria : projets d'architecture, de décoration intérieure et de rénovation réalisés à Oran et en Algérie.",
-  alternates: { canonical: "/projects" },
+  alternates: { canonical: "/projects/" },
 };
 
-const ALL_LABEL = "Tous";
-
-export default async function ProjectsPage({ searchParams }) {
-  const { category } = await searchParams;
-
+export default async function ProjectsPage() {
   const [projects, categories] = await Promise.all([
     getProjects().catch(() => []),
     getCategories().catch(() => []),
   ]);
 
   const categoryNames = categories.map((c) => c.name);
-  const activeCategory = category && categoryNames.includes(category) ? category : ALL_LABEL;
 
   return (
     <div className="projects-page">
       <h1 className="projects-page-title">Nos Projets</h1>
 
-      <ProjectsFilterGrid
-        projects={projects}
-        categoryNames={categoryNames}
-        activeCategory={activeCategory}
-      />
+      <ProjectsFilterGrid projects={projects} categoryNames={categoryNames} />
     </div>
   );
 }

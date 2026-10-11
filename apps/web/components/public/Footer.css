@@ -3,7 +3,7 @@
   color: #f0f0f0;
   padding: 4rem 2rem 2rem;
   margin-top: 5rem;
-  border-top: 3px solid var(--color-secondary);
+  border-top: 3px solid var(--color-primary);
   position: relative;
   overflow: hidden;
 }
@@ -15,7 +15,7 @@
   left: 0;
   width: 100%;
   height: 4px;
-  background: var(--color-secondary);
+  background: var(--color-primary);
   background-size: 200% 100%;
   animation: shimmer 3s ease infinite;
 }
@@ -52,15 +52,15 @@
 .footer-logo {
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--color-secondary);
+  color: var(--color-gold);
   margin-bottom: 0.5rem;
-  font-family: var(--font-heading), serif;
+  font-family: var(--font-heading), sans-serif;
   letter-spacing: 1px;
 }
 
 .footer-tagline {
   font-size: 0.95rem;
-  color: var(--color-primary);
+  color: var(--color-on-dark);
   font-weight: 600;
   margin-bottom: 1rem;
   letter-spacing: 0.5px;
@@ -81,7 +81,7 @@
 
 .footer-section-title {
   font-size: 1.1rem;
-  color: var(--color-secondary);
+  color: var(--color-on-dark);
   font-weight: 700;
   margin-bottom: 0.5rem;
   padding-bottom: 0.8rem;
@@ -108,14 +108,14 @@
 .footer-links li a::before,
 .footer-contact li a::before {
   content: "▸";
-  color: var(--color-primary);
+  color: var(--color-on-dark);
   margin-right: 0.5rem;
   transition: transform 0.3s ease;
 }
 
 .footer-links li a:hover,
 .footer-contact li a:hover {
-  color: var(--color-secondary);
+  color: var(--color-on-dark-strong);
   padding-left: 0.5rem;
 }
 
@@ -136,7 +136,7 @@
 }
 
 .contact-label {
-  color: var(--color-primary);
+  color: var(--color-on-dark);
   font-weight: 600;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
@@ -148,7 +148,7 @@
 }
 
 .footer-contact li a:hover {
-  color: var(--color-secondary);
+  color: var(--color-on-dark-strong);
   text-decoration: underline;
 }
 
@@ -165,8 +165,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(85, 101, 54, 0.2);
-  color: var(--color-primary);
+  background: rgba(185, 203, 143, 0.12);
+  color: var(--color-on-dark);
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid transparent;
@@ -174,10 +174,10 @@
 }
 
 .social-icon:hover {
-  background: var(--color-secondary);
+  background: var(--color-primary);
   color: #fff;
   transform: translateY(-4px) scale(1.1);
-  border-color: var(--color-secondary);
+  border-color: var(--color-primary);
   box-shadow: 0 8px 20px rgba(85, 101, 54, 0.4);
 }
 
@@ -220,7 +220,7 @@
 }
 
 .footer-bottom-links a:hover {
-  color: var(--color-secondary);
+  color: var(--color-on-dark-strong);
 }
 
 @media (max-width: 768px) {

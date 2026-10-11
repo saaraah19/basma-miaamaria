@@ -23,7 +23,7 @@
 
 .save-indicator {
   font-size: 0.775rem;
-  color: var(--color-primary);
+  color: var(--color-link);
 }
 
 .text-block-error {
@@ -112,7 +112,7 @@
 .tiptap-editor-wrapper .ProseMirror strong { font-weight: 600; }
 .tiptap-editor-wrapper .ProseMirror em { font-style: italic; }
 .tiptap-editor-wrapper .ProseMirror u { text-decoration: underline; }
-.tiptap-editor-wrapper .ProseMirror a { color: var(--color-primary); }
+.tiptap-editor-wrapper .ProseMirror a { color: var(--color-link); }
 
 .text-block-editor textarea.admin-textarea,
 .text-block-editor input.admin-input {
@@ -132,6 +132,6 @@
 
 .draft-indicator {
   font-size: 0.775rem;
-  color: var(--color-secondary);
+  color: var(--color-heading);
   font-weight: 500;
 }

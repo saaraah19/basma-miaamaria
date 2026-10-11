@@ -2,13 +2,14 @@ import { getSection } from "@/lib/api-server";
 import { sanitize } from "@/lib/sanitize";
 import { toInlineStyle } from "@/lib/blockStyles";
 import ContactForm from "@/components/public/ContactForm";
+import ApiWarmup from "@/components/public/ApiWarmup";
 import "./contact.css";
 
 export const metadata = {
   title: "Contact",
   description:
     "Contactez Basma Miaamaria pour votre projet d'architecture ou de décoration intérieure à Oran. Téléphone, email, adresse et formulaire de contact.",
-  alternates: { canonical: "/contact" },
+  alternates: { canonical: "/contact/" },
 };
 
 export default async function ContactPage() {
@@ -27,6 +28,7 @@ export default async function ContactPage() {
 
   return (
     <div className="contact-page">
+      <ApiWarmup />
       <section className="contact-hero">
         <div className="contact-hero-content">
           <div

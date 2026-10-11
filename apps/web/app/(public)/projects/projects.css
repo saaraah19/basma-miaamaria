@@ -8,7 +8,7 @@
 
 .projects-page-title {
   font-size: 2.5rem;
-  color: var(--color-secondary);
+  color: var(--color-heading);
   font-family: var(--font-heading), serif;
   margin-bottom: 2rem;
 }
@@ -64,8 +64,8 @@
 
 .projects-filters a {
   background: var(--color-surface);
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+  color: var(--color-link);
+  border: 2px solid var(--color-link);
   padding: 0.6rem 1.5rem;
   border-radius: 25px;
   cursor: pointer;

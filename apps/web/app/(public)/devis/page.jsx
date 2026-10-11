@@ -2,17 +2,14 @@ import { getSection } from "@/lib/api-server";
 import { sanitize } from "@/lib/sanitize";
 import { toInlineStyle } from "@/lib/blockStyles";
 import DevisForm from "@/components/public/DevisForm";
+import ApiWarmup from "@/components/public/ApiWarmup";
 import "./devis.css";
-
-// Renders per-request instead of being attempted during `next build` —
-// avoids depending on the API being reachable at build time.
-export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Demander un Devis",
   description:
     "Décrivez votre projet d'architecture, de décoration intérieure ou de rénovation et recevez une estimation personnalisée de Basma Miaamaria.",
-  alternates: { canonical: "/devis" },
+  alternates: { canonical: "/devis/" },
 };
 
 export default async function DevisPage() {
@@ -26,6 +23,7 @@ export default async function DevisPage() {
 
   return (
     <section className="devis-section">
+      <ApiWarmup />
      <div
   role="heading"
   aria-level={1}

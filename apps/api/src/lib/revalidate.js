@@ -1,25 +1,35 @@
-// Server-to-server call to the Next.js app's on-demand revalidation route.
-// This intentionally lives in the API, not the browser — the secret used
-// here is a real server-only env var, never bundled into client JS. The
-// old approach sent NEXT_PUBLIC_REVALIDATE_SECRET from admin-queries.js,
-// but anything prefixed NEXT_PUBLIC_ ships inside the browser bundle and
-// is readable by anyone via devtools — that defeated the whole check.
-const SITE_URL = process.env.CLIENT_URL;
-const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET;
+// The public site is now a static export, so there is no "revalidate this tag"
+// route any more. Instead, content changes ask Render to REBUILD the static
+// site through its Deploy Hook. Every controller already calls
+// `revalidateTag(...)` after a change, so none of them needed to be touched.
+//
+// Edits usually come in bursts (save, save, publish...), so rebuilds are
+// debounced: we wait until 90 s pass with no further change, then trigger one.
+const DEPLOY_HOOK = process.env.RENDER_DEPLOY_HOOK_URL;
+const DEBOUNCE_MS = 90_000;
+
+let timer = null;
+const pendingTags = new Set();
 
 export async function revalidateTag(tag) {
-  if (!SITE_URL || !REVALIDATE_SECRET) {
-    console.error("revalidateTag skipped: CLIENT_URL or REVALIDATE_SECRET not set");
+  if (!DEPLOY_HOOK) {
+    console.error("revalidateTag skipped: RENDER_DEPLOY_HOOK_URL not set");
     return;
   }
-  try {
-    await fetch(`${SITE_URL}/api/revalidate`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tag, secret: REVALIDATE_SECRET }),
-    });
-  } catch (err) {
-    // Best-effort — worst case the public page just waits out the ISR window.
-    console.error(`revalidateTag("${tag}") failed:`, err.message);
-  }
+
+  pendingTags.add(tag);
+  clearTimeout(timer);
+
+  timer = setTimeout(async () => {
+    const tags = [...pendingTags].join(", ");
+    pendingTags.clear();
+    timer = null;
+    try {
+      const res = await fetch(DEPLOY_HOOK, { method: "POST" });
+      console.log(`Static site rebuild requested (${tags}) -> HTTP ${res.status}`);
+    } catch (err) {
+      // Best-effort: worst case the next edit (or a manual deploy) rebuilds it.
+      console.error("Static site rebuild request failed:", err.message);
+    }
+  }, DEBOUNCE_MS);
 }

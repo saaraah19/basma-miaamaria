@@ -5,37 +5,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Required for the Docker build (apps/web/Dockerfile) — produces a
-  // minimal, self-contained server bundle instead of relying on a full
-  // node_modules install inside the runtime image.
-  output: "standalone",
+  // The public site is exported as plain HTML/CSS/JS (the `out/` folder) and
+  // served by a Render *Static Site*: always on, no cold start, free.
+  output: "export",
 
-  // This is an npm-workspaces monorepo. Without this, Next's file tracer
-  // treats apps/web as the project root and misses dependencies hoisted
-  // up to the repo root's node_modules (including `next` itself) — the
-  // standalone build then ships with an incomplete/empty node_modules and
-  // crashes at runtime with "Cannot find module 'next'".
+  // /about/index.html instead of /about.html — works on any static host.
+  trailingSlash: true,
+
+  // Monorepo: lets Next trace dependencies hoisted to the repo root.
   outputFileTracingRoot: path.join(__dirname, "../../"),
 
-  // Proxies browser + same-container requests to the Express API process,
-  // which now runs alongside this one instead of as a separate service.
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://localhost:5000/api/:path*",
-      },
-    ];
-  },
-
+  // next/image has no server in a static export, so resizing is delegated to
+  // Cloudinary's own CDN (see lib/cloudinary-loader.js).
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        pathname: "/**",
-      },
-    ],
+    loader: "custom",
+    loaderFile: "./lib/cloudinary-loader.js",
   },
 };
 

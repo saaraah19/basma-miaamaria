@@ -7,7 +7,7 @@
 
 .contact-title {
   font-size: 2.5rem;
-  color: var(--color-secondary);
+  color: var(--color-heading);
   font-family: var(--font-heading), serif;
   margin-bottom: 0.5rem;
 }

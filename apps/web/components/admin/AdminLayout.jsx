@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import ThemeToggle from "@/components/public/ThemeToggle";
+import BrandLoader from "@/components/public/BrandLoader";
 import { useSession, useLogout } from "@/lib/auth-client";
 import "./AdminLayout.css";
 
@@ -28,10 +29,12 @@ export default function AdminLayout({ title, children }) {
     }
   }, [isLoading, isError, pathname, router]);
 
-  // Avoid flashing the dashboard shell before we know the session is
-  // actually valid — the middleware's cookie-presence check already kept
-  // out the fully-logged-out case, this covers "cookie present but expired."
-  if (isLoading || isError) return null;
+  // The API sleeps on Render's free plan: the first request can take up to a
+  // minute. Show the branded loader (it explains the wait after a few
+  // seconds) instead of a blank screen. Also avoids flashing the dashboard
+  // shell before we know the session is valid.
+  if (isLoading) return <BrandLoader />;
+  if (isError) return null;
 
   return (
     <div className="admin-layout">

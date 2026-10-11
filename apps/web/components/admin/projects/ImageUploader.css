@@ -32,7 +32,7 @@
 
 .uploading-bar {
   background: rgba(85, 101, 54, 0.1);
-  color: var(--color-primary);
+  color: var(--color-link);
   padding: 0.6rem 1rem;
   border-radius: 8px;
   font-size: 0.85rem;

@@ -35,9 +35,9 @@
   opacity: 0;
 }
 
-.notfound-4 { color: var(--color-secondary); animation-delay: 0s; }
-.notfound-0 { color: var(--color-primary); animation-delay: 0.15s; }
-.notfound-4b { color: var(--color-secondary); animation-delay: 0.3s; }
+.notfound-4 { color: var(--color-heading); animation-delay: 0s; }
+.notfound-0 { color: var(--color-link); animation-delay: 0.15s; }
+.notfound-4b { color: var(--color-heading); animation-delay: 0.3s; }
 
 .notfound-divider {
   width: 80px;
@@ -51,7 +51,7 @@
 
 .notfound-title {
   font-size: 2rem;
-  color: var(--color-accent);
+  color: var(--color-heading);
   font-family: var(--font-heading), serif;
   margin-bottom: 1rem;
   animation: fadeIn 0.6s ease forwards 0.5s;
@@ -98,8 +98,8 @@
 }
 
 .notfound-btn-back:hover {
-  border-color: var(--color-secondary);
-  color: var(--color-secondary);
+  border-color: var(--color-heading);
+  color: var(--color-heading);
   transform: translateY(-2px);
 }
 
@@ -117,8 +117,8 @@
 
 .notfound-btn-projects {
   background: transparent;
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-link);
+  color: var(--color-link);
 }
 
 .notfound-btn-projects:hover {

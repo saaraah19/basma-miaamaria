@@ -79,7 +79,7 @@
 
 .section-title {
   font-size: 1.8rem;
-  color: var(--color-secondary);
+  color: var(--color-heading);
   font-family: var(--font-heading), serif;
   margin-bottom: 1rem;
 }
@@ -119,7 +119,7 @@
 }
 
 .value-icon {
-  color: var(--color-primary);
+  color: var(--color-link);
   font-weight: 700;
   font-size: 1.3rem;
   flex-shrink: 0;
@@ -127,7 +127,7 @@
 }
 
 .values-list strong {
-  color: var(--color-secondary);
+  color: var(--color-heading);
 }
 
 .expertise-grid {
@@ -160,7 +160,7 @@
 
 .expertise-item h3 {
   font-size: 1rem;
-  color: var(--color-secondary);
+  color: var(--color-heading);
   margin: 0;
   font-weight: 600;
 }
@@ -182,7 +182,7 @@
 .cta-button {
   display: inline-block;
   background: var(--color-surface);
-  color: var(--color-primary);
+  color: var(--color-link);
   border: none;
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
