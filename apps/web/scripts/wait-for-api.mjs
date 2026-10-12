@@ -9,7 +9,9 @@ if (!base) {
   process.exit(1);
 }
 
-const url = `${base}/content/navbar`; // touches the database, so it wakes Neon too
+//const url = `${base}/content/navbar`; // touches the database, so it wakes Neon too
+const url = `${base}/content/public/navbar`;
+
 const deadline = Date.now() + 5 * 60_000;
 let attempt = 0;
 
