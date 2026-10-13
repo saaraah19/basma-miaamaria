@@ -129,7 +129,7 @@ function MessagesContent() {
 
   return (
     <>
-      <div className="content-tab-bar">
+      <div className="messages-tab-bar">
         <button className={tab === "messages" ? "active" : ""} onClick={() => switchTab("messages")}>
           Contact {messages.some((m) => !m.isRead) && "🔴"}
         </button>

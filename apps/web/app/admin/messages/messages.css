@@ -1,3 +1,43 @@
+/* Contact / Devis tabs.
+   These used to borrow `.content-tab-bar`, whose styles live in
+   admin/content/content.css. That file is only loaded by the Content page, so
+   opening Messages directly (or refreshing it) left the tabs unstyled and
+   glued together ("ContactDevis"). They now carry their own styles. */
+.messages-tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.messages-tab-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 400;
+  background: transparent;
+  color: var(--color-muted);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.messages-tab-bar button.active {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
 .unread-dot {
   display: inline-block;
   width: 8px;

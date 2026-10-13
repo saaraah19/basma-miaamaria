@@ -1,14 +1,14 @@
 import { getSection } from "@/lib/api-server";
+import { pickWhatsAppNumber } from "@/lib/whatsapp-number";
 import "./WhatsAppButton.css";
 
-// Strips everything except digits so a saved phone like "+213 562 580 995"
-// or "+213562580995" both resolve to the digits-only format wa.me requires.
-const toWhatsAppNumber = (phone) => phone.replace(/[^\d]/g, "");
+// The admin "phone" field is free text and may hold several numbers; this picks
+// ONE (preferring a 07 number) in the digits-only format wa.me requires.
 
 export default async function WhatsAppButton() {
   const content = await getSection("footer").catch(() => ({}));
-  const phone = content?.phone?.value ?? "+213562580995";
-  const waNumber = toWhatsAppNumber(phone);
+  const phone = content?.phone?.value ?? "+213793368389";
+  const waNumber = pickWhatsAppNumber(phone);
 
   const message = encodeURIComponent(
     "Bonjour, je souhaite avoir des renseignements sur vos services."
